@@ -15,7 +15,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {AuthenticationException.class})
     public ResponseEntity<ApiException> handleAuthenticationException(AuthenticationException e){
-        return new ResponseEntity<>(new ApiException("Ne postoji korisnik sa ovim kredencijalima", "401", 401, LocalDateTime.now()), HttpStatusCode.valueOf(401));
+        return new ResponseEntity<>(new ApiException("Korisnik ne postoji!", "401", 401, LocalDateTime.now()), HttpStatusCode.valueOf(401));
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})

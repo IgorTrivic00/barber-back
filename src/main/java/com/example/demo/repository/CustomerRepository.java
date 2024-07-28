@@ -1,13 +1,11 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.CustomerEntity;
 import com.example.demo.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
-
-    Optional<UserEntity> findByEmail(String email);
+public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+    CustomerEntity findByUserEntity(UserEntity userEntity);
 }

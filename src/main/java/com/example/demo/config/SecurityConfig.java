@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(antMatcher("/api/v1/auth/**")).permitAll();
+                    auth.requestMatchers(antMatcher("/api/v1/barber/find-all")).permitAll();
                     auth.anyRequest().authenticated();
                 });
         http
