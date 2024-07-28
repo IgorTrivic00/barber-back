@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(antMatcher("/api/v1/auth/**")).permitAll();
                     auth.requestMatchers(antMatcher("/api/v1/barber/find-all")).permitAll();
+                    auth.requestMatchers(antMatcher("/api/v1/service/barber/{barberUuid}")).permitAll();
                     auth.anyRequest().authenticated();
                 });
         http
