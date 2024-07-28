@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.auth.User;
+import com.example.demo.dto.User;
+import com.example.demo.model.enums.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +20,7 @@ public class UserEntity implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
+    @Column(unique = true)
     private UUID uuid;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

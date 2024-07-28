@@ -1,10 +1,16 @@
 package com.example.demo.service.service_impl;
 
-import com.example.demo.dto.auth.User;
-import com.example.demo.dto.auth.UserSession;
+import com.example.demo.dto.Barber;
+import com.example.demo.dto.Customer;
+import com.example.demo.dto.User;
+import com.example.demo.dto.UserSession;
 import com.example.demo.model.UserEntity;
+import com.example.demo.model.enums.UserRole;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtService;
 import com.example.demo.service.AuthenticationService;
+import com.example.demo.service.BarberService;
+import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,33 +29,75 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerService customerService;
+    private final BarberService barberService;
+    private final UserRepository userRepository;
 
     @Autowired
     public AuthenticationServiceImpl(UserService userService,
                                      AuthenticationManager authenticationManager,
                                      JwtService jwtService,
-                                     PasswordEncoder passwordEncoder) {
+                                     PasswordEncoder passwordEncoder,
+                                     CustomerService customerService,
+                                     BarberService barberService,
+                                     UserRepository userRepository) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.customerService = customerService;
+        this.barberService = barberService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserSession login(User user) {
+        String password = user.password()
+                .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.email(),
-                        user.password()
+                        user.email().trim(),
+                        password
                 )
         );
-        User user1 = userService.findByEmail(user.email());
-        String token = jwtService.generateToken(new UserEntity(user1.email(), user1.password(), user1.userRole()));
-        return new UserSession(user1, token);
+        User user1 = userService.findByEmail(user.email().trim());
+        String token = jwtService.generateToken(new UserEntity(user1.email().trim(), password, user1.userRole()));
+
+        if(user1.userRole().equals(UserRole.BARBER)) {
+            Barber barber = barberService.findByUser(user);
+            return new UserSession(user1, barber, token);
+        } else if (user1.userRole().equals(UserRole.CUSTOMER)) {
+            Customer customer = customerService.findByUser(user);
+            return new UserSession(user1, customer, token);
+        }
+
+        return null;
     }
 
     @Override
-    public User register(User user) {
-        return userService.save(new User(user.email(), passwordEncoder.encode(user.password().trim()), user.userRole()));
+    public Customer registerCustomer(Customer customer) {
+        User user = new User(customer.user().email().trim(), passwordEncoder.encode(customer.user().password()
+                .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.CUSTOMER);
+
+        User user1 = userService.save(user);
+
+        UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
+                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+
+        return customerService.save(customer, userEntity);
+    }
+
+    @Override
+    public Barber registerBarber(Barber barber) {
+        User user = new User(barber.user().email().trim(), passwordEncoder.encode(barber.user().password()
+                .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.BARBER);
+
+        User user1 = userService.save(user);
+
+        UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
+                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+
+        return barberService.save(barber, userEntity);
     }
 }

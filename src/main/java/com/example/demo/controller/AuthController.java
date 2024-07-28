@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.auth.User;
-import com.example.demo.dto.auth.UserSession;
+import com.example.demo.dto.Barber;
+import com.example.demo.dto.Customer;
+import com.example.demo.dto.User;
+import com.example.demo.dto.UserSession;
 import com.example.demo.dto.request_response.LogoutRequest;
 import com.example.demo.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,14 @@ public class AuthController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
-    public User register(@RequestBody User user){
-        return authenticationService.register(user);
+    @PostMapping("/register-customer")
+    public Customer registerCustomer(@RequestBody Customer customer){
+        return authenticationService.registerCustomer(customer);
+    }
+
+    @PostMapping("/register-barber")
+    public Barber registerBarber(@RequestBody Barber barber){
+        return authenticationService.registerBarber(barber);
     }
 
     @PostMapping("/login")
