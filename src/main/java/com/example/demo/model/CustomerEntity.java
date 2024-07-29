@@ -18,6 +18,7 @@ public class CustomerEntity {
     @Column(unique = true)
     private UUID uuid;
     private String name;
+    private String mobile;
     @OneToOne
     @JoinColumn(
             name = "app_user_id"
@@ -26,14 +27,19 @@ public class CustomerEntity {
 
     public CustomerEntity() {}
 
-    public CustomerEntity(String name, UserEntity userEntity) {
+    public CustomerEntity(String name, String mobile, UserEntity userEntity) {
         this.name = name;
         this.userEntity = userEntity;
         this.uuid = UUID.randomUUID();
+        this.mobile = mobile;
     }
 
+    public CustomerEntity update(String name){
+        this.name = name;
+        return this;
+    }
 
     public Customer getDto(){
-        return new Customer(Optional.of(id), Optional.of(uuid), name, userEntity.getDto());
+        return new Customer(Optional.of(id), Optional.of(uuid), name, Optional.of(mobile), userEntity.getDto());
     }
 }

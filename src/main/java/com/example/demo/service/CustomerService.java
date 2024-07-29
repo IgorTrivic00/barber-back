@@ -11,4 +11,5 @@ public interface CustomerService {
 
     Customer findByUser(User user);
 
+    Customer update(Customer customer);
 }
