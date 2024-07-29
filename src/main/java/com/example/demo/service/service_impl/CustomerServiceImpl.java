@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer, UserEntity userEntity) {
-        CustomerEntity customerEntity = new CustomerEntity(customer.name().trim(), userEntity);
+        CustomerEntity customerEntity = new CustomerEntity(customer.name().trim(), customer.mobile().get().trim(), userEntity);
         return customerRepository.save(customerEntity).getDto();
     }
 
@@ -34,5 +34,13 @@ public class CustomerServiceImpl implements CustomerService {
         UserEntity userEntity = userRepository.findByEmail(user.email())
                 .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
         return customerRepository.findByUserEntity(userEntity).getDto();
+    }
+
+    @Override
+    public Customer update(Customer customer) {
+        CustomerEntity customerEntity = customerRepository.findByUuid(customer.uuid().get())
+                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"))
+                .update(customer.name());
+        return customerRepository.save(customerEntity).getDto();
     }
 }

@@ -39,7 +39,7 @@ public class DemoApplication {
 			barberList.add(new Barber("Mirko", BarberTitle.MASTER, new User("mirko@gmail.com", "123", UserRole.BARBER)));
 
 			barberList.forEach(authenticationService::registerBarber);
-			authenticationService.registerCustomer(new Customer("Lazar", new User("lazar@gmail.com", "123", UserRole.CUSTOMER)));
+			authenticationService.registerCustomer(new Customer("Lazar", "0638931381", new User("lazar@gmail.com", "123", UserRole.CUSTOMER)));
 
 			List<Service> serviceList = new ArrayList<>();
 
