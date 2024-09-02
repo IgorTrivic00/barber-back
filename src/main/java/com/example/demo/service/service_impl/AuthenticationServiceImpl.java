@@ -12,18 +12,18 @@ import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.BarberService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-
-    private static Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
@@ -77,27 +77,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Customer registerCustomer(Customer customer) {
+        validateEmail(customer.user().email().trim());
+
         User user = new User(customer.user().email().trim(), passwordEncoder.encode(customer.user().password()
                 .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.CUSTOMER);
 
         User user1 = userService.save(user);
-
         UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
 
         return customerService.save(customer, userEntity);
     }
 
     @Override
     public Barber registerBarber(Barber barber) {
+        validateEmail(barber.user().email().trim());
+
         User user = new User(barber.user().email().trim(), passwordEncoder.encode(barber.user().password()
                 .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.BARBER);
 
         User user1 = userService.save(user);
-
         UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
 
         return barberService.save(barber, userEntity);
+    }
+
+    private void validateEmail(String email) {
+        if(!Validator.ValidateEmail(email)){
+            throw new IllegalArgumentException("Email adresa nije u ispravnom formatu!");
+        }
     }
 }

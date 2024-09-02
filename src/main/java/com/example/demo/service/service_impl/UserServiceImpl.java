@@ -10,14 +10,13 @@ import com.example.demo.service.BarberService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-    private static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
 
     private final UserRepository userRepository;
 
@@ -30,13 +29,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!")).getDto();
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!")).getDto();
     }
 
     @Override
     public User save(User user) {
         if(userRepository.findByEmail(user.email()).isPresent()) {
-            throw new IllegalArgumentException("Korisnik već postoji!");
+            throw new UsernameNotFoundException("Korisnik već postoji!");
         }
 
         UserEntity userEntity = new UserEntity(user.email().trim(), user.password()

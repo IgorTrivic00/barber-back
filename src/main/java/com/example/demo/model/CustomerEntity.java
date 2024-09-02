@@ -1,8 +1,8 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.Barber;
 import com.example.demo.dto.Customer;
 import jakarta.persistence.*;
+import lombok.Setter;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +18,7 @@ public class CustomerEntity {
     @Column(unique = true)
     private UUID uuid;
     private String name;
+    @Setter
     private String mobile;
     @OneToOne
     @JoinColumn(
@@ -27,6 +28,12 @@ public class CustomerEntity {
 
     public CustomerEntity() {}
 
+    public CustomerEntity(String name, UserEntity userEntity) {
+        this.name = name;
+        this.userEntity = userEntity;
+        this.uuid = UUID.randomUUID();
+    }
+
     public CustomerEntity(String name, String mobile, UserEntity userEntity) {
         this.name = name;
         this.userEntity = userEntity;
@@ -34,12 +41,15 @@ public class CustomerEntity {
         this.mobile = mobile;
     }
 
-    public CustomerEntity update(String name){
+
+    public CustomerEntity update(String name, Optional<String> mobile){
         this.name = name;
+        mobile.ifPresent(this::setMobile);
         return this;
     }
 
     public Customer getDto(){
-        return new Customer(Optional.of(id), Optional.of(uuid), name, Optional.of(mobile), userEntity.getDto());
+        return new Customer(Optional.ofNullable(id), Optional.ofNullable(uuid), name, Optional.ofNullable(mobile), userEntity.getDto());
     }
+
 }

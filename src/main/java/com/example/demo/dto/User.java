@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.enums.UserRole;
+import com.example.demo.utils.Validator;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

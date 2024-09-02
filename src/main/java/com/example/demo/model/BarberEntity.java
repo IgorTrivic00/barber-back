@@ -36,6 +36,6 @@ public class BarberEntity {
     }
 
     public Barber getDto(){
-        return new Barber(Optional.of(id), Optional.of(uuid), name, barberTitle, userEntity.getDto());
+        return new Barber(Optional.ofNullable(id), Optional.ofNullable(uuid), name, barberTitle, userEntity.getDto());
     }
 }

@@ -8,6 +8,7 @@ import com.example.demo.repository.BarberRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BarberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class BarberServiceImpl implements BarberService {
     @Override
     public Barber findByUser(User user) {
         UserEntity userEntity = userRepository.findByEmail(user.email())
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
         return barberRepository.findByUserEntity(userEntity).getDto();
     }
 
