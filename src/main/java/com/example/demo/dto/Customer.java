@@ -13,4 +13,8 @@ public record Customer(Optional<Long> id,
         this(Optional.empty(), Optional.empty(), name, Optional.of(mobile), user);
     }
 
+    public Customer(String name, User user){
+        this(Optional.empty(), Optional.empty(), name, Optional.empty(), user);
+    }
+
 }

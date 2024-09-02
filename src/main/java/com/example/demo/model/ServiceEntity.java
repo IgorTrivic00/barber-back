@@ -37,7 +37,7 @@ public class ServiceEntity {
     }
 
     public Service getDto(){
-        return new Service(Optional.of(id), Optional.of(uuid), serviceName, duration, price, Optional.of(barber.getDto()));
+        return new Service(Optional.ofNullable(id), Optional.of(uuid), serviceName, duration, price, Optional.ofNullable(barber.getDto()));
     }
 
 }

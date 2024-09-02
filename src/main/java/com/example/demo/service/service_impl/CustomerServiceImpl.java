@@ -8,6 +8,7 @@ import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,22 +26,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer, UserEntity userEntity) {
-        CustomerEntity customerEntity = new CustomerEntity(customer.name().trim(), customer.mobile().get().trim(), userEntity);
+        CustomerEntity customerEntity = new CustomerEntity(customer.name().trim(), userEntity);
         return customerRepository.save(customerEntity).getDto();
     }
 
     @Override
     public Customer findByUser(User user) {
         UserEntity userEntity = userRepository.findByEmail(user.email())
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
         return customerRepository.findByUserEntity(userEntity).getDto();
     }
 
     @Override
     public Customer update(Customer customer) {
         CustomerEntity customerEntity = customerRepository.findByUuid(customer.uuid().get())
-                .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji!"))
-                .update(customer.name());
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"))
+                .update(customer.name(), customer.mobile());
         return customerRepository.save(customerEntity).getDto();
     }
 }

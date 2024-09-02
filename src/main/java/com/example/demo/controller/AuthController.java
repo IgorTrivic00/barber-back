@@ -6,6 +6,8 @@ import com.example.demo.dto.User;
 import com.example.demo.dto.UserSession;
 import com.example.demo.dto.request_response.LogoutRequest;
 import com.example.demo.service.AuthenticationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     private final AuthenticationService authenticationService;
 
     @Autowired
@@ -27,16 +31,19 @@ public class AuthController {
 
     @PostMapping("/register-customer")
     public Customer registerCustomer(@RequestBody Customer customer){
+        logger.debug("====================[REGISTER CUSTOMER]====================]");
         return authenticationService.registerCustomer(customer);
     }
 
     @PostMapping("/register-barber")
     public Barber registerBarber(@RequestBody Barber barber){
+        logger.debug("====================[REGISTER BARBER]====================]");
         return authenticationService.registerBarber(barber);
     }
 
     @PostMapping("/login")
     public UserSession login(@RequestBody User user){
+        logger.debug("====================[LOGIN USER]====================]");
         return authenticationService.login(user);
     }
 
