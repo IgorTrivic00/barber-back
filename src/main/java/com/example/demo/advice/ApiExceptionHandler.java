@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {UsernameNotFoundException.class})
-    public ResponseEntity<ApiException> handleAuthenticationException(UsernameNotFoundException e){
+    public ResponseEntity<ApiException> handleUsernameNotFoundException(UsernameNotFoundException e){
         return new ResponseEntity<>(new ApiException(e.getMessage(), "401", 401, LocalDateTime.now()), HttpStatusCode.valueOf(401));
     }
 
