@@ -1,11 +1,9 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.Service;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 

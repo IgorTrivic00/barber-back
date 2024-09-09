@@ -1,11 +1,12 @@
 package com.example.demo.service.service_impl;
 
-import com.example.demo.dto.Barber;
 import com.example.demo.model.BarberEntity;
 import com.example.demo.model.ServiceEntity;
 import com.example.demo.repository.BarberRepository;
 import com.example.demo.repository.ServiceRepository;
 import com.example.demo.service.ServiceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ServiceServiceImpl implements ServiceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ServiceServiceImpl.class);
 
     private final ServiceRepository serviceRepository;
     private final BarberRepository barberRepository;
