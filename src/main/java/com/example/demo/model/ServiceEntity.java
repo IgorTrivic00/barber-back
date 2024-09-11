@@ -33,7 +33,12 @@ public class ServiceEntity {
         this.price = price;
         this.barber = barber;
     }
-
+    public ServiceEntity update(String serviceName, Duration duration, Long price) {
+        this.serviceName = serviceName;
+        this.duration = duration;
+        this.price = price;
+        return this;
+    }
     public Service getDto(){
         return new Service(Optional.ofNullable(id), Optional.of(uuid), serviceName, duration, price, Optional.ofNullable(barber.getDto()));
     }

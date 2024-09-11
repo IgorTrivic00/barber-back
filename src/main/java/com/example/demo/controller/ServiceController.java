@@ -5,10 +5,8 @@ import com.example.demo.service.ServiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +28,32 @@ public class ServiceController {
         logger.debug("====================[FIND BARBER SERVICES]====================]");
         return serviceService.findBarberServices(barberUuid);
     }
+    @GetMapping("/all")
+    public List<Service> findAllServices() {
+        logger.debug("====================[FIND ALL SERVICES]====================");
+        return serviceService.findAllServices();
+    }
+
+    @PostMapping("/{barberId}/service")
+    public ResponseEntity<Service> addService(@PathVariable Long barberId, @RequestBody Service service) {
+        Service addedService = serviceService.addService(service, barberId);
+        return ResponseEntity.ok(addedService);
+    }
+
+    @PutMapping("/service/{serviceId}")
+    public ResponseEntity<Service> updateService(@PathVariable Long serviceId,
+                                                 @RequestBody Service service) {
+        logger.debug("====================[UPDATE SERVICE]====================");
+        Service updatedService = serviceService.updateService(serviceId, service);
+        return ResponseEntity.ok(updatedService);
+    }
+
+
+    @DeleteMapping("/service/{serviceId}")
+    public ResponseEntity<Void> deleteService(@PathVariable Long serviceId) {
+        logger.debug("====================[DELETE SERVICE]====================");
+        serviceService.deleteService(serviceId);
+        return ResponseEntity.ok().build();
+    }
+
 }

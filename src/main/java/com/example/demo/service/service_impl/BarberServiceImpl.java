@@ -3,8 +3,10 @@ package com.example.demo.service.service_impl;
 import com.example.demo.dto.Barber;
 import com.example.demo.dto.User;
 import com.example.demo.model.BarberEntity;
+import com.example.demo.model.ServiceEntity;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.BarberRepository;
+import com.example.demo.repository.ServiceRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BarberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,13 @@ public class BarberServiceImpl implements BarberService {
     private final BarberRepository barberRepository;
     private final UserRepository userRepository;
 
+
     @Autowired
     public BarberServiceImpl(BarberRepository barberRepository,
                              UserRepository userRepository) {
         this.barberRepository = barberRepository;
         this.userRepository = userRepository;
+
     }
 
     @Override
@@ -47,4 +51,8 @@ public class BarberServiceImpl implements BarberService {
                 .map(BarberEntity::getDto)
                 .collect(Collectors.toList());
     }
+
+
+
+
 }
