@@ -9,16 +9,15 @@ import java.util.List;
 public interface ServiceService {
 
     List<Service> findBarberServices(String barberUuid);
+
     Service save(Service service);
 
-     List<Service> findAllServices() ;
+    List<Service> findAllServices();
 
     Service addService(Service service, Long barberId);
-
 
     void deleteService(Long serviceId);
 
     Service updateService(Long serviceId, Service service);
-
 
 }

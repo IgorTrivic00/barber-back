@@ -28,18 +28,23 @@ public class ServiceController {
         logger.debug("====================[FIND BARBER SERVICES]====================]");
         return serviceService.findBarberServices(barberUuid);
     }
+
     @GetMapping("/all")
     public List<Service> findAllServices() {
         logger.debug("====================[FIND ALL SERVICES]====================");
         return serviceService.findAllServices();
     }
 
+//    i za sve ovo ne mora da ti vraca response entity moze samo da ti vrati record Service
+//    uradicu samo na prvu metodu ti mozes za ostale posle obrisi komentar
+
+//    promeni da se salje uuid a ne id frizera
     @PostMapping("/{barberId}/service")
-    public ResponseEntity<Service> addService(@PathVariable Long barberId, @RequestBody Service service) {
-        Service addedService = serviceService.addService(service, barberId);
-        return ResponseEntity.ok(addedService);
+    public Service addService(@PathVariable Long barberId, @RequestBody Service service) {
+        return serviceService.addService(service, barberId);
     }
 
+    //    promeni da se salje uuid a ne id usluge
     @PutMapping("/service/{serviceId}")
     public ResponseEntity<Service> updateService(@PathVariable Long serviceId,
                                                  @RequestBody Service service) {
@@ -48,7 +53,7 @@ public class ServiceController {
         return ResponseEntity.ok(updatedService);
     }
 
-
+    //    promeni da se salje uuid a ne id usluge
     @DeleteMapping("/service/{serviceId}")
     public ResponseEntity<Void> deleteService(@PathVariable Long serviceId) {
         logger.debug("====================[DELETE SERVICE]====================");
