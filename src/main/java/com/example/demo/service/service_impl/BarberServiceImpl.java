@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +54,46 @@ public class BarberServiceImpl implements BarberService {
     }
 
 
+    public Barber deleteBarber(String uuid) {
+        BarberEntity barberEntity = barberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+
+        barberRepository.delete(barberEntity);
+        return barberEntity.getDto();
+
+    }
+
+    @Override
+    public Barber update(String uuid, Barber barber) {
+    BarberEntity barberEntity = barberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+
+       /* UserEntity userEntity = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("User ne postoji!"));*/
+
+       barberEntity.update(barber.name().trim(),barber.barberTitle());
+        return barberRepository.save(barberEntity).getDto();
+
+    }
+//ovo je nesto sto cemo se dogovarati
+    @Override
+    public Barber updateUserByBarber(String uuid, Barber barber, String useruuid) {
+        BarberEntity barberEntity = barberRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+
+      UserEntity userEntity = userRepository.findByUuid(useruuid)
+                .orElseThrow(() -> new RuntimeException("User ne postoji!"));
+
+        barberEntity.updateUserByBarber(barber.name().trim(),barber.barberTitle(),userEntity);
+        return barberRepository.save(barberEntity).getDto();
+    }
+
+    @Override
+    public Barber findByBarber(Barber barber) {
+       BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().toString())
+               .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+        return barberRepository.findByBarber(barberEntity).getDto();
+    }
 
 
 }

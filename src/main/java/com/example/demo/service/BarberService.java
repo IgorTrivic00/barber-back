@@ -17,5 +17,13 @@ public interface BarberService {
 
     List<Barber> findAll();
 
+    Barber deleteBarber(String uuid);
+
+
+    Barber update(String uuid, Barber barber);
+
+    Barber updateUserByBarber(String uuid,  Barber barber, String useruuid);
+
+    Barber findByBarber(Barber barber);
 
 }

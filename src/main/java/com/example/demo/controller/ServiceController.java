@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -45,7 +46,7 @@ public class ServiceController {
     }
 
     //    promeni da se salje uuid a ne id usluge
-    @PutMapping("/service/{serviceId}")
+    /*@PutMapping("/service/{serviceId}")
     public ResponseEntity<Service> updateService(@PathVariable Long serviceId,
                                                  @RequestBody Service service) {
         logger.debug("====================[UPDATE SERVICE]====================");
@@ -59,6 +60,21 @@ public class ServiceController {
         logger.debug("====================[DELETE SERVICE]====================");
         serviceService.deleteService(serviceId);
         return ResponseEntity.ok().build();
+    }*/
+
+
+
+    @PutMapping("/service/{uuid}")
+    public Service updateService(@PathVariable String uuid, @RequestBody Service service) {
+        logger.debug("====================[UPDATE SERVICE]====================");
+        return serviceService.updateService(uuid, service);
+    }
+
+
+    @DeleteMapping("/service/{uuid}")
+    public Service deleteService(@PathVariable String uuid) {
+        logger.debug("====================[DELETE SERVICE]====================");
+        return serviceService.deleteService(uuid);
     }
 
 }

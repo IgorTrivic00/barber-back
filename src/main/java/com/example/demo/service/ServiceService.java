@@ -5,6 +5,7 @@ import com.example.demo.model.ServiceEntity;
 
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ServiceService {
 
@@ -16,8 +17,8 @@ public interface ServiceService {
 
     Service addService(Service service, Long barberId);
 
-    void deleteService(Long serviceId);
+    Service deleteService(String uuid);
 
-    Service updateService(Long serviceId, Service service);
+    Service updateService(String uuid, Service service);
 
 }
