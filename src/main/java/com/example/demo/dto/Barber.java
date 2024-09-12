@@ -16,9 +16,12 @@ public record Barber(Optional<Long> id,
     }
 
 
+
     //Ovaj konstruktor postoji samo da bi lakse implementirao commandLineRunner u main metodi
     // i da se ne bi zamarao sa ostalim podacima tako da kad se aplikacija malo razvije treba da se skloni
     public Barber(Long id){
         this(Optional.of(id), Optional.empty(), null, null, null);
     }
+
+
 }

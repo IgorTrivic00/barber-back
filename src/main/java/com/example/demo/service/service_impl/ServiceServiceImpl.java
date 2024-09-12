@@ -58,31 +58,30 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public com.example.demo.dto.Service addService(com.example.demo.dto.Service service, Long barberId) {
         BarberEntity barberEntity = barberRepository.findById(barberId)
-                .orElseThrow(() -> new RuntimeException("Barber not found!"));
+                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
         ServiceEntity serviceEntity = new ServiceEntity(service.serviceName(), service.duration(), service.price(), barberEntity);
         return serviceRepository.save(serviceEntity).getDto();
     }
 
-
-
     @Override
-    public com.example.demo.dto.Service updateService(Long serviceId, com.example.demo.dto.Service service) {
+    public com.example.demo.dto.Service updateService(String uuid, com.example.demo.dto.Service service) {
         BarberEntity barberEntity = barberRepository.findById(service.barber().get().id().get())
-                .orElseThrow(() -> new RuntimeException("Barber not found!"));
+                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
 
-        ServiceEntity serviceEntity = serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new RuntimeException("Service not found!"));
+        ServiceEntity serviceEntity = serviceRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Usluga ne postoji!"));
 
         serviceEntity.update(service.serviceName(), service.duration(), service.price());
         return serviceRepository.save(serviceEntity).getDto();
     }
 
     @Override
-    public void deleteService(Long serviceId) {
+    public com.example.demo.dto.Service deleteService(String uuid) {
+        ServiceEntity serviceEntity = serviceRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Usluga ne postoji!"));
 
-        ServiceEntity serviceEntity = serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new RuntimeException("Service not found!"));
         serviceRepository.delete(serviceEntity);
+        return serviceEntity.getDto();
     }
 
 

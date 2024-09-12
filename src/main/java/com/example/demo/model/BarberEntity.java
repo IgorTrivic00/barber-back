@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.Barber;
+import com.example.demo.dto.User;
 import com.example.demo.model.enums.BarberTitle;
 import jakarta.persistence.*;
 
@@ -35,7 +36,22 @@ public class BarberEntity {
         this.userEntity = userEntity;
     }
 
+
+
     public Barber getDto(){
         return new Barber(Optional.ofNullable(id), Optional.ofNullable(uuid), name, barberTitle, userEntity.getDto());
+    }
+
+    public BarberEntity update(String name, BarberTitle barberTitle) {
+        this.name=name;
+        this.barberTitle=barberTitle;
+        return this;
+    }
+
+    public BarberEntity updateUserByBarber(String name, BarberTitle barberTitle, UserEntity userEntity) {
+        this.name=name;
+        this.barberTitle=barberTitle;
+        this.userEntity=userEntity;
+        return this;
     }
 }
