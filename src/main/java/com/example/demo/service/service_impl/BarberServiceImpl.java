@@ -64,8 +64,8 @@ public class BarberServiceImpl implements BarberService {
     }
 
     @Override
-    public Barber update(String uuid, Barber barber) {
-    BarberEntity barberEntity = barberRepository.findByUuid(uuid)
+    public Barber update( Barber barber) {
+    BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().get())
                 .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
 
        /* UserEntity userEntity = userRepository.findByUuid(uuid)
@@ -75,7 +75,8 @@ public class BarberServiceImpl implements BarberService {
         return barberRepository.save(barberEntity).getDto();
 
     }
-//ovo je nesto sto cemo se dogovarati
+//ovo je nesto sto cemo se dogovarati, kasnije cemo ovo
+    /*
     @Override
     public Barber updateUserByBarber(String uuid, Barber barber, String useruuid) {
         BarberEntity barberEntity = barberRepository.findByUuid(uuid)
@@ -86,11 +87,11 @@ public class BarberServiceImpl implements BarberService {
 
         barberEntity.updateUserByBarber(barber.name().trim(),barber.barberTitle(),userEntity);
         return barberRepository.save(barberEntity).getDto();
-    }
+    }*/
 
     @Override
-    public Barber findByBarber(Barber barber) {
-       BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().get())
+    public Barber findByBarber(String uuid) {
+       BarberEntity barberEntity = barberRepository.findByUuid(uuid)
                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
         return barberEntity.getDto();
     }

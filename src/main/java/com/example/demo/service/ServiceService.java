@@ -10,16 +10,16 @@ import java.util.UUID;
 
 public interface ServiceService {
 
-    List<Service> findBarberServices(Barber barber);
+    List<Service> findBarberServices(String uuid);
 
     Service save(Service service);
 
     List<Service> findAllServices();
 
-    Service addService(Service service, Long barberId);
+    Service addService(Service service);
 
     Service deleteService(String uuid);
 
-    Service updateService(String uuid, Service service);
+    Service updateService( Service service);
 
 }
