@@ -1,5 +1,4 @@
 package com.example.demo.model;
-
 import com.example.demo.dto.Customer;
 import jakarta.persistence.*;
 import lombok.Setter;
@@ -15,11 +14,15 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     private Long id;
+
     @Column(unique = true)
-    private UUID uuid;
+    private String uuid;
+
     private String name;
+
     @Setter
     private String mobile;
+
     @OneToOne
     @JoinColumn(
             name = "app_user_id"
@@ -31,16 +34,15 @@ public class CustomerEntity {
     public CustomerEntity(String name, UserEntity userEntity) {
         this.name = name;
         this.userEntity = userEntity;
-        this.uuid = UUID.randomUUID();
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public CustomerEntity(String name, String mobile, UserEntity userEntity) {
         this.name = name;
         this.userEntity = userEntity;
-        this.uuid = UUID.randomUUID();
+        this.uuid = UUID.randomUUID().toString();
         this.mobile = mobile;
     }
-
 
     public CustomerEntity update(String name, Optional<String> mobile){
         this.name = name;
@@ -51,5 +53,4 @@ public class CustomerEntity {
     public Customer getDto(){
         return new Customer(Optional.ofNullable(id), Optional.ofNullable(uuid), name, Optional.ofNullable(mobile), userEntity.getDto());
     }
-
 }

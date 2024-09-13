@@ -32,8 +32,8 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<com.example.demo.dto.Service> findBarberServices(String barberUuid) {
-        BarberEntity barberEntity = barberRepository.findByUuid(UUID.fromString(barberUuid))
+    public List<com.example.demo.dto.Service> findBarberServices(Barber barber) {
+        BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().get())
                 .orElseThrow(() -> new IllegalArgumentException("Barber ne postoji!"));
 
         return serviceRepository.findByBarber(barberEntity).stream()

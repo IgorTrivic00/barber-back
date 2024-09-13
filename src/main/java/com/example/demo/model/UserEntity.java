@@ -17,15 +17,21 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     private String email;
+
     private String password;
+
     @Column(unique = true)
-    private UUID uuid;
+    private String uuid;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
     private boolean locked;
     private boolean enabled;
+
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -34,7 +40,7 @@ public class UserEntity implements UserDetails {
     public UserEntity(String email, String password, UserRole userRole) {
         this.email = email;
         this.password = password;
-        this.uuid = UUID.randomUUID();
+        this.uuid = UUID.randomUUID().toString();
         this.created_at = LocalDateTime.now();
         this.updated_at = LocalDateTime.now();
         this.locked = false;

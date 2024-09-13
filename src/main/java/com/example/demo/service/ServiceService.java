@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
 import com.example.demo.model.ServiceEntity;
 
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public interface ServiceService {
 
-    List<Service> findBarberServices(String barberUuid);
+    List<Service> findBarberServices(Barber barber);
 
     Service save(Service service);
 

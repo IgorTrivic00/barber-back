@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
 import com.example.demo.service.ServiceService;
 import org.slf4j.Logger;
@@ -25,9 +26,9 @@ public class ServiceController {
     }
 
     @GetMapping("/barber/{barberUuid}")
-    public List<Service> findBarberServices(@PathVariable String barberUuid) {
+    public List<Service> findBarberServices(@RequestBody Barber barber) {
         logger.debug("====================[FIND BARBER SERVICES]====================]");
-        return serviceService.findBarberServices(barberUuid);
+        return serviceService.findBarberServices(barber);
     }
 
     @GetMapping("/all")
