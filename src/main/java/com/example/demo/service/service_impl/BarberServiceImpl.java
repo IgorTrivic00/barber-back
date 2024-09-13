@@ -90,9 +90,9 @@ public class BarberServiceImpl implements BarberService {
 
     @Override
     public Barber findByBarber(Barber barber) {
-       BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().toString())
+       BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid().get())
                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
-        return barberRepository.findByBarber(barberEntity).getDto();
+        return barberEntity.getDto();
     }
 
 

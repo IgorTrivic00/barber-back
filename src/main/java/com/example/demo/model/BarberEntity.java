@@ -16,11 +16,15 @@ public class BarberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     private Long id;
+
     @Column(unique = true)
-    private UUID uuid;
+    private String uuid;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
     private BarberTitle barberTitle;
+
     @OneToOne
     @JoinColumn(
             name = "app_user_id"
@@ -31,27 +35,25 @@ public class BarberEntity {
 
     public BarberEntity(String name, BarberTitle barberTitle, UserEntity userEntity) {
         this.name = name;
-        this.uuid = UUID.randomUUID();
+        this.uuid = UUID.randomUUID().toString();
         this.barberTitle = barberTitle;
         this.userEntity = userEntity;
     }
-
-
 
     public Barber getDto(){
         return new Barber(Optional.ofNullable(id), Optional.ofNullable(uuid), name, barberTitle, userEntity.getDto());
     }
 
     public BarberEntity update(String name, BarberTitle barberTitle) {
-        this.name=name;
-        this.barberTitle=barberTitle;
+        this.name = name;
+        this.barberTitle = barberTitle;
         return this;
     }
 
     public BarberEntity updateUserByBarber(String name, BarberTitle barberTitle, UserEntity userEntity) {
-        this.name=name;
-        this.barberTitle=barberTitle;
-        this.userEntity=userEntity;
+        this.name = name;
+        this.barberTitle = barberTitle;
+        this.userEntity = userEntity;
         return this;
     }
 }
