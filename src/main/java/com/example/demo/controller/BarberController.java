@@ -36,27 +36,27 @@ public class BarberController {
         return barberService.deleteBarber(uuid);
     }
 
-    @PostMapping("/barber")
+    @PostMapping()
     public Barber addBarber(@RequestBody Barber barber, @RequestBody UserEntity user) {
         logger.debug("====================[ADD BARBER]====================");
         return barberService.save(barber,user);
     }
 
-    @PutMapping("/{uuid}")
-    public Barber updateBarber(@PathVariable String uuid, @RequestBody Barber barber) {
+    @PutMapping()
+    public Barber updateBarber( @RequestBody Barber barber) {
         logger.debug("====================[UPDATE BARBER]====================");
-        return barberService.update(uuid,barber);
+        return barberService.update(barber);
     }
 
-   @PutMapping("/{useruuid}/{uuid}")
+   /*@PutMapping("/{useruuid}/{uuid}")
     public Barber updateUserByBarber(@PathVariable String uuid, @RequestBody  Barber barber,@PathVariable String useruuid) {
         logger.debug("====================[UPDATE USER BY BARBER]====================");
         return barberService.updateUserByBarber(uuid, barber,useruuid);
-    }
+    }*/
 
-    @GetMapping("/barber")
-    public Barber findBarber(@RequestBody Barber barber) {
+    @GetMapping("/{uuid}")
+    public Barber findBarber(@PathVariable String uuid) {
         logger.debug("====================[UPDATE USER BY BARBER]====================");
-        return barberService.findByBarber(barber);
+        return barberService.findByBarber(uuid);
     }
 }

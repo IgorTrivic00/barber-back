@@ -20,10 +20,10 @@ public interface BarberService {
     Barber deleteBarber(String uuid);
 
 
-    Barber update(String uuid, Barber barber);
+    Barber update( Barber barber);
 
-    Barber updateUserByBarber(String uuid,  Barber barber, String useruuid);
+    //Barber updateUserByBarber(String uuid,  Barber barber, String useruuid);
 
-    Barber findByBarber(Barber barber);
+    Barber findByBarber(String  uuid);
 
 }

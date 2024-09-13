@@ -24,11 +24,11 @@ public class ServiceController {
     public ServiceController(ServiceService serviceService) {
         this.serviceService = serviceService;
     }
-
+//pitaj za ovo
     @GetMapping("/barber/{barberUuid}")
-    public List<Service> findBarberServices(@RequestBody Barber barber) {
+    public List<Service> findBarberServices(@PathVariable String barberUuid) {
         logger.debug("====================[FIND BARBER SERVICES]====================]");
-        return serviceService.findBarberServices(barber);
+        return serviceService.findBarberServices(barberUuid);
     }
 
     @GetMapping("/all")
@@ -41,34 +41,19 @@ public class ServiceController {
 //    uradicu samo na prvu metodu ti mozes za ostale posle obrisi komentar
 
 //    promeni da se salje uuid a ne id frizera
-    @PostMapping("/{barberId}/service")
-    public Service addService(@PathVariable Long barberId, @RequestBody Service service) {
-        return serviceService.addService(service, barberId);
+    @PostMapping("/service")
+    public Service addService( @RequestBody Service service) {
+        return serviceService.addService(service);
     }
 
-    //    promeni da se salje uuid a ne id usluge
-    /*@PutMapping("/service/{serviceId}")
-    public ResponseEntity<Service> updateService(@PathVariable Long serviceId,
-                                                 @RequestBody Service service) {
+
+
+
+
+    @PutMapping("/service")
+    public Service updateService( @RequestBody Service service) {
         logger.debug("====================[UPDATE SERVICE]====================");
-        Service updatedService = serviceService.updateService(serviceId, service);
-        return ResponseEntity.ok(updatedService);
-    }
-
-    //    promeni da se salje uuid a ne id usluge
-    @DeleteMapping("/service/{serviceId}")
-    public ResponseEntity<Void> deleteService(@PathVariable Long serviceId) {
-        logger.debug("====================[DELETE SERVICE]====================");
-        serviceService.deleteService(serviceId);
-        return ResponseEntity.ok().build();
-    }*/
-
-
-
-    @PutMapping("/service/{uuid}")
-    public Service updateService(@PathVariable String uuid, @RequestBody Service service) {
-        logger.debug("====================[UPDATE SERVICE]====================");
-        return serviceService.updateService(uuid, service);
+        return serviceService.updateService( service);
     }
 
 
