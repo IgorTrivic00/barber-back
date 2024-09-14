@@ -1,22 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.Barber;
-import com.example.demo.dto.Service;
-import com.example.demo.dto.User;
 import com.example.demo.model.UserEntity;
 import com.example.demo.service.BarberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/barber")
 public class BarberController {
+
     private static Logger logger = LoggerFactory.getLogger(BarberController.class);
     private final BarberService barberService;
 
@@ -48,15 +45,9 @@ public class BarberController {
         return barberService.update(barber);
     }
 
-   /*@PutMapping("/{useruuid}/{uuid}")
-    public Barber updateUserByBarber(@PathVariable String uuid, @RequestBody  Barber barber,@PathVariable String useruuid) {
-        logger.debug("====================[UPDATE USER BY BARBER]====================");
-        return barberService.updateUserByBarber(uuid, barber,useruuid);
-    }*/
-
     @GetMapping("/{uuid}")
-    public Barber findBarber(@PathVariable String uuid) {
+    public Barber findByUuid(@PathVariable String uuid) {
         logger.debug("====================[UPDATE USER BY BARBER]====================");
-        return barberService.findByBarber(uuid);
+        return barberService.findByUuid(uuid);
     }
 }

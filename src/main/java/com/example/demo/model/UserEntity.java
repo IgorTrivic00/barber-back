@@ -30,19 +30,15 @@ public class UserEntity implements UserDetails {
     private UserRole userRole;
 
     private boolean locked;
-    private boolean enabled;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private boolean enabled;
 
     public UserEntity() {}
 
-    public UserEntity(String email, String password, UserRole userRole) {
+    public UserEntity(String uuid, String email, String password, UserRole userRole) {
         this.email = email;
         this.password = password;
-        this.uuid = UUID.randomUUID().toString();
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+        this.uuid = uuid;
         this.locked = false;
         this.enabled = true;
         this.userRole = userRole;
@@ -85,7 +81,7 @@ public class UserEntity implements UserDetails {
     }
 
     public User getDto(){
-        return new User(id, email, uuid, userRole);
+        return new User(uuid, email, userRole);
     }
 
 }

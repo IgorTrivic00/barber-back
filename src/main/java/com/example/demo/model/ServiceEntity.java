@@ -29,8 +29,8 @@ public class ServiceEntity {
 
     public ServiceEntity() {}
 
-    public ServiceEntity(String serviceName, Duration duration, Long price, BarberEntity barber) {
-        this.uuid = UUID.randomUUID().toString();
+    public ServiceEntity(String uuid, String serviceName, Duration duration, Long price, BarberEntity barber) {
+        this.uuid = uuid;
         this.serviceName = serviceName;
         this.duration = duration;
         this.price = price;
@@ -45,7 +45,7 @@ public class ServiceEntity {
     }
 
     public Service getDto(){
-        return new Service(Optional.ofNullable(id), Optional.ofNullable(uuid), serviceName, duration, price, Optional.ofNullable(barber.getDto()));
+        return new Service(uuid, serviceName, duration, price, barber.getDto());
     }
 
 }

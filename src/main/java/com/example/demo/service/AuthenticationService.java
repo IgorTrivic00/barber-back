@@ -9,7 +9,7 @@ public interface AuthenticationService {
 
     UserSession login(User user);
 
-    Customer registerCustomer(Customer customer);
+    Customer registerCustomer(Customer customer, User user);
 
-    Barber registerBarber(Barber barber);
+    Barber registerBarber(Barber barber, User user);
 }

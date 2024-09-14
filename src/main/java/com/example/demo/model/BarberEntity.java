@@ -1,12 +1,10 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.Barber;
-import com.example.demo.dto.User;
 import com.example.demo.model.enums.BarberTitle;
 import jakarta.persistence.*;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Entity
 @Table(name = "barber")
@@ -33,15 +31,15 @@ public class BarberEntity {
 
     public BarberEntity() {}
 
-    public BarberEntity(String name, BarberTitle barberTitle, UserEntity userEntity) {
+    public BarberEntity(String uuid, String name, BarberTitle barberTitle, UserEntity userEntity) {
         this.name = name;
-        this.uuid = UUID.randomUUID().toString();
+        this.uuid = uuid;
         this.barberTitle = barberTitle;
         this.userEntity = userEntity;
     }
 
     public Barber getDto(){
-        return new Barber(Optional.ofNullable(id), Optional.ofNullable(uuid), name, barberTitle, userEntity.getDto());
+        return new Barber(uuid, name, barberTitle);
     }
 
     public BarberEntity update(String name, BarberTitle barberTitle) {
@@ -50,6 +48,7 @@ public class BarberEntity {
         return this;
     }
 
+    //nek ostane za sada ova metoda nisam siguran da li ce nam sluziti icemu
     public BarberEntity updateUserByBarber(String name, BarberTitle barberTitle, UserEntity userEntity) {
         this.name = name;
         this.barberTitle = barberTitle;
