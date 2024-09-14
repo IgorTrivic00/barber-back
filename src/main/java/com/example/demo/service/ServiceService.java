@@ -12,8 +12,6 @@ public interface ServiceService {
 
     List<Service> findBarberServices(String uuid);
 
-    Service save(Service service);
-
     List<Service> findAllServices();
 
     Service addService(Service service);

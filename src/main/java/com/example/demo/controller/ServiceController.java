@@ -24,7 +24,7 @@ public class ServiceController {
     public ServiceController(ServiceService serviceService) {
         this.serviceService = serviceService;
     }
-//pitaj za ovo
+
     @GetMapping("/barber/{barberUuid}")
     public List<Service> findBarberServices(@PathVariable String barberUuid) {
         logger.debug("====================[FIND BARBER SERVICES]====================]");
@@ -37,27 +37,19 @@ public class ServiceController {
         return serviceService.findAllServices();
     }
 
-//    i za sve ovo ne mora da ti vraca response entity moze samo da ti vrati record Service
-//    uradicu samo na prvu metodu ti mozes za ostale posle obrisi komentar
-
-//    promeni da se salje uuid a ne id frizera
-    @PostMapping("/service")
+    @PostMapping()
     public Service addService( @RequestBody Service service) {
+        logger.debug("====================[ADD SERVICE]====================");
         return serviceService.addService(service);
     }
 
-
-
-
-
-    @PutMapping("/service")
+    @PutMapping()
     public Service updateService( @RequestBody Service service) {
         logger.debug("====================[UPDATE SERVICE]====================");
         return serviceService.updateService( service);
     }
 
-
-    @DeleteMapping("/service/{uuid}")
+    @DeleteMapping("/{uuid}")
     public Service deleteService(@PathVariable String uuid) {
         logger.debug("====================[DELETE SERVICE]====================");
         return serviceService.deleteService(uuid);
