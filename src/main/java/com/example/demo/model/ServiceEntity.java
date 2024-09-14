@@ -15,27 +15,37 @@ public class ServiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     private Long id;
+
     @Column(unique = true)
-    private UUID uuid;
+    private String uuid;
+
     private String serviceName;
     private Duration duration;
     private Long price;
+
     @ManyToOne
     @JoinColumn(name = "barber_id")
     private BarberEntity barber;
 
     public ServiceEntity() {}
 
-    public ServiceEntity(String serviceName, Duration duration, Long price, BarberEntity barber) {
-        this.uuid = UUID.randomUUID();
+    public ServiceEntity(String uuid, String serviceName, Duration duration, Long price, BarberEntity barber) {
+        this.uuid = uuid;
         this.serviceName = serviceName;
         this.duration = duration;
         this.price = price;
         this.barber = barber;
     }
 
+    public ServiceEntity update(String serviceName, Duration duration, Long price) {
+        this.serviceName = serviceName;
+        this.duration = duration;
+        this.price = price;
+        return this;
+    }
+
     public Service getDto(){
-        return new Service(Optional.ofNullable(id), Optional.of(uuid), serviceName, duration, price, Optional.ofNullable(barber.getDto()));
+        return new Service(uuid, serviceName, duration, price, barber.getDto());
     }
 
 }

@@ -1,20 +1,13 @@
 package com.example.demo.dto;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public record Customer(Optional<Long> id,
-                       Optional<UUID> uuid,
+public record Customer(String uuid,
                        String name,
-                       Optional<String> mobile,
-                       User user) {
+                       Optional<String> mobile) {
 
-    public Customer(String name, String mobile, User user){
-        this(Optional.empty(), Optional.empty(), name, Optional.of(mobile), user);
-    }
-
-    public Customer(String name, User user){
-        this(Optional.empty(), Optional.empty(), name, Optional.empty(), user);
+    public Customer(String uuid, String name){
+        this(uuid, name, Optional.empty());
     }
 
 }

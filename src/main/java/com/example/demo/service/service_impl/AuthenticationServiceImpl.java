@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -65,9 +64,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         password
                 )
         );
-
         user = userService.findByEmail(user.email().trim());
-        String token = jwtService.generateToken(new UserEntity(user.email().trim(), password, user.userRole()));
+        String token = jwtService.generateToken(new UserEntity(user.uuid(), user.email().trim(), password, user.userRole()));
 
         if(user.userRole().equals(UserRole.BARBER)) {
             Barber barber = barberService.findByUser(user);
@@ -81,28 +79,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Customer registerCustomer(Customer customer) {
-        validateEmail(customer.user().email().trim());
+    public Customer registerCustomer(Customer customer, User user) {
+        validateEmail(user.email().trim());
 
-        User user = new User(customer.user().email().trim(), passwordEncoder.encode(customer.user().password()
+        user = new User(user.uuid(), user.email().trim(), passwordEncoder.encode(user.password()
                 .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.CUSTOMER);
 
-        User user1 = userService.save(user);
-        UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
+        user = userService.save(user);
+        UserEntity userEntity = userRepository.findByUuid(user.uuid())
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
 
         return customerService.save(customer, userEntity);
     }
 
     @Override
-    public Barber registerBarber(Barber barber) {
-        validateEmail(barber.user().email().trim());
+    public Barber registerBarber(Barber barber, User user) {
+        validateEmail(user.email().trim());
 
-        User user = new User(barber.user().email().trim(), passwordEncoder.encode(barber.user().password()
+        user = new User(user.uuid(), user.email().trim(), passwordEncoder.encode(user.password()
                 .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim()), UserRole.BARBER);
 
-        User user1 = userService.save(user);
-        UserEntity userEntity = userRepository.findByEmail(user1.email().trim())
+        user = userService.save(user);
+        UserEntity userEntity = userRepository.findByUuid(user.uuid())
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
 
         return barberService.save(barber, userEntity);
