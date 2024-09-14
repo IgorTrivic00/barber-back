@@ -1,26 +1,21 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.enums.UserRole;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
-public record User(Optional<Long> id,
+public record User(String uuid,
                    String email,
                    Optional<String> password,
-                   Optional<UUID> uuid,
                    UserRole userRole,
                    boolean locked,
-                   boolean enabled,
-                   Optional<LocalDateTime> createdAt,
-                   Optional<LocalDateTime> updatedAt) {
+                   boolean enabled) {
 
-    public User(Long id, String email, UUID uuid, UserRole userRole){
-        this(Optional.of(id), email,Optional.empty(), Optional.of(uuid), userRole, false, true, Optional.empty(), Optional.empty());
+    public User(String uuid, String email, String password, UserRole userRole){
+        this(uuid, email, Optional.of(password), userRole, false, true);
     }
 
-    public User(String email, String password, UserRole userRole){
-        this(Optional.empty(), email, Optional.of(password), Optional.empty(), userRole, false, true, Optional.empty(), Optional.empty());
+    public User(String uuid, String email, UserRole userRole){
+        this(uuid, email, Optional.empty(), userRole, false, true);
     }
 }

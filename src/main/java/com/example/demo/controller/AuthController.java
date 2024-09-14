@@ -4,6 +4,7 @@ import com.example.demo.dto.Barber;
 import com.example.demo.dto.Customer;
 import com.example.demo.dto.User;
 import com.example.demo.dto.UserSession;
+import com.example.demo.dto.request_response.AuthenticationRequest;
 import com.example.demo.dto.request_response.LogoutRequest;
 import com.example.demo.service.AuthenticationService;
 import org.slf4j.Logger;
@@ -30,15 +31,19 @@ public class AuthController {
     }
 
     @PostMapping("/register-customer")
-    public Customer registerCustomer(@RequestBody Customer customer){
+    public Customer registerCustomer(@RequestBody AuthenticationRequest request){
         logger.debug("====================[REGISTER CUSTOMER]====================]");
-        return authenticationService.registerCustomer(customer);
+        return authenticationService.registerCustomer(request.customer()
+                        .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji")),
+                request.user());
     }
 
     @PostMapping("/register-barber")
-    public Barber registerBarber(@RequestBody Barber barber){
+    public Barber registerBarber(@RequestBody AuthenticationRequest request){
         logger.debug("====================[REGISTER BARBER]====================]");
-        return authenticationService.registerBarber(barber);
+        return authenticationService.registerBarber(request.barber()
+                        .orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji")),
+                request.user());
     }
 
     @PostMapping("/login")

@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Korisnik već postoji!");
         }
 
-        UserEntity userEntity = new UserEntity(user.email().trim(), user.password()
+        UserEntity userEntity = new UserEntity(user.uuid(), user.email().trim(), user.password()
                 .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")), user.userRole());
         return userRepository.save(userEntity).getDto();
     }

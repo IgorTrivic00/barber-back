@@ -25,6 +25,11 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(new ApiException(e.getMessage(), "500", 500, LocalDateTime.now()), HttpStatusCode.valueOf(500));
     }
 
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ResponseEntity<ApiException> handleRuntimeException(RuntimeException e){
+        return new ResponseEntity<>(new ApiException(e.getMessage(), "500", 500, LocalDateTime.now()), HttpStatusCode.valueOf(500));
+    }
+
     @ExceptionHandler(value = {BadCredentialsException.class})
     public ResponseEntity<ApiException> handleBadCredentialsException(BadCredentialsException e){
         return new ResponseEntity<>(new ApiException("Korisnik ne postoji!", "401", 500, LocalDateTime.now()), HttpStatusCode.valueOf(401));

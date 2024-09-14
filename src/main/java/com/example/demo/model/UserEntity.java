@@ -17,26 +17,28 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     private String email;
+
     private String password;
+
     @Column(unique = true)
-    private UUID uuid;
+    private String uuid;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
     private boolean locked;
+
     private boolean enabled;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
 
     public UserEntity() {}
 
-    public UserEntity(String email, String password, UserRole userRole) {
+    public UserEntity(String uuid, String email, String password, UserRole userRole) {
         this.email = email;
         this.password = password;
-        this.uuid = UUID.randomUUID();
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+        this.uuid = uuid;
         this.locked = false;
         this.enabled = true;
         this.userRole = userRole;
@@ -79,7 +81,7 @@ public class UserEntity implements UserDetails {
     }
 
     public User getDto(){
-        return new User(id, email, uuid, userRole);
+        return new User(uuid, email, userRole);
     }
 
 }
