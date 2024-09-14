@@ -3,6 +3,7 @@ package com.example.demo.advice;
 import com.example.demo.dto.exception.ApiException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -22,6 +23,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<ApiException> handleIllegalArgumentException(IllegalArgumentException e){
         return new ResponseEntity<>(new ApiException(e.getMessage(), "500", 500, LocalDateTime.now()), HttpStatusCode.valueOf(500));
+    }
+
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    public ResponseEntity<ApiException> handleBadCredentialsException(BadCredentialsException e){
+        return new ResponseEntity<>(new ApiException("Korisnik ne postoji!", "401", 500, LocalDateTime.now()), HttpStatusCode.valueOf(401));
     }
 
 }

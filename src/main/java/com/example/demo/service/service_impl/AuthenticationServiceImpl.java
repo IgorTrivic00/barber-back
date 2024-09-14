@@ -13,6 +13,8 @@ import com.example.demo.service.BarberService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
@@ -61,15 +65,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         password
                 )
         );
-        User user1 = userService.findByEmail(user.email().trim());
-        String token = jwtService.generateToken(new UserEntity(user1.email().trim(), password, user1.userRole()));
 
-        if(user1.userRole().equals(UserRole.BARBER)) {
+        user = userService.findByEmail(user.email().trim());
+        String token = jwtService.generateToken(new UserEntity(user.email().trim(), password, user.userRole()));
+
+        if(user.userRole().equals(UserRole.BARBER)) {
             Barber barber = barberService.findByUser(user);
-            return new UserSession(user1, barber, token);
-        } else if (user1.userRole().equals(UserRole.CUSTOMER)) {
+            return new UserSession(user, barber, token);
+        } else if (user.userRole().equals(UserRole.CUSTOMER)) {
             Customer customer = customerService.findByUser(user);
-            return new UserSession(user1, customer, token);
+            return new UserSession(user, customer, token);
         }
 
         return null;
