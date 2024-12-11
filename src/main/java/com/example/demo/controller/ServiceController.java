@@ -37,14 +37,14 @@ public class ServiceController {
         return serviceService.findAllServices();
     }
 
-    @PostMapping()
-    public Service addService( @RequestBody Service service) {
+    @PostMapping("/add")
+    public Service addService(@RequestBody Service service) {
         logger.debug("====================[ADD SERVICE]====================");
         return serviceService.addService(service);
     }
 
     @PutMapping()
-    public Service updateService( @RequestBody Service service) {
+    public Service updateService(@RequestBody Service service) {
         logger.debug("====================[UPDATE SERVICE]====================");
         return serviceService.updateService( service);
     }

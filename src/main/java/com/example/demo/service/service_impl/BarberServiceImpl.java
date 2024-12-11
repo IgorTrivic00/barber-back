@@ -2,6 +2,7 @@ package com.example.demo.service.service_impl;
 
 import com.example.demo.dto.Barber;
 import com.example.demo.dto.User;
+import com.example.demo.dto.exception.ResourceNotFoundException;
 import com.example.demo.model.BarberEntity;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.BarberRepository;
@@ -52,7 +53,7 @@ public class BarberServiceImpl implements BarberService {
 
     public Barber deleteBarber(String uuid) {
         BarberEntity barberEntity = barberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
 
         barberRepository.delete(barberEntity);
         return barberEntity.getDto();
@@ -62,7 +63,7 @@ public class BarberServiceImpl implements BarberService {
     @Override
     public Barber update( Barber barber) {
     BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid())
-                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
 
        barberEntity.update(barber.name().trim(),barber.barberTitle());
         return barberRepository.save(barberEntity).getDto();
@@ -85,7 +86,7 @@ public class BarberServiceImpl implements BarberService {
     @Override
     public Barber findByUuid(String uuid) {
        BarberEntity barberEntity = barberRepository.findByUuid(uuid)
-               .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
+               .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
         return barberEntity.getDto();
     }
 

@@ -1,13 +1,13 @@
 package com.example.demo.advice;
 
 import com.example.demo.dto.exception.ApiException;
+import com.example.demo.dto.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -28,6 +28,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {RuntimeException.class})
     public ResponseEntity<ApiException> handleRuntimeException(RuntimeException e){
         return new ResponseEntity<>(new ApiException(e.getMessage(), "500", 500, LocalDateTime.now()), HttpStatusCode.valueOf(500));
+    }
+
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    public ResponseEntity<ApiException> handleResourceDoesNoExistsException(ResourceNotFoundException e){
+        return new ResponseEntity<>(new ApiException(e.getMessage(), "400", 400, LocalDateTime.now()), HttpStatusCode.valueOf(400));
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})
