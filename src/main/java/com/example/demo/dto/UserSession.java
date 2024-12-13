@@ -17,4 +17,8 @@ public record UserSession(
         this(user, Optional.empty(), Optional.of(customer), token);
     }
 
+    public UserSession(User user, String token){
+        this(user, Optional.empty(), Optional.empty(), token);
+    }
+
 }

@@ -73,6 +73,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } else if (user.userRole().equals(UserRole.CUSTOMER)) {
             Customer customer = customerService.findByUser(user);
             return new UserSession(user, customer, token);
+        }   else if (user.userRole().equals(UserRole.ADMIN)) {
+            return new UserSession(user, token);
         }
 
         return null;
