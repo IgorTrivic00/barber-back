@@ -5,6 +5,7 @@ import com.example.demo.dto.filter.ServiceFilter;
 import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.BarberEntity;
 import com.example.demo.model.ServiceEntity;
+import com.example.demo.model.UserEntity;
 import com.example.demo.repository.BarberRepository;
 import com.example.demo.repository.ServiceRepository;
 import com.example.demo.service.ServiceService;
@@ -59,6 +60,12 @@ public class ServiceServiceImpl implements ServiceService {
                 .collect(Collectors.toList());
 
         return new SearchResponse<com.example.demo.dto.Service>(data, serviceRepository.count(ServiceSpecification.search(filter)));
+    }
+
+    @Override
+    public SearchResponse<com.example.demo.dto.Service> findMyServices(UserEntity userEntity) {
+        BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity);
+        return search(new ServiceFilter(List.of(barberEntity.getDto().uuid())));
     }
 
     @Override

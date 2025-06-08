@@ -5,6 +5,7 @@ import com.example.demo.dto.Service;
 import com.example.demo.dto.filter.ServiceFilter;
 import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.ServiceEntity;
+import com.example.demo.model.UserEntity;
 
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface ServiceService {
     Service updateService( Service service);
 
     SearchResponse<Service> search(ServiceFilter filter);
+
+    SearchResponse<Service> findMyServices(UserEntity userEntity);
 }

@@ -36,7 +36,7 @@ public class DemoApplication {
 //
 //			requests.add(
 //					new AuthenticationRequest(
-//							new User(UUID.randomUUID().toString(), "stefan@gmail.com", "123", UserRole.BARBER),
+	//							new User(UUID.randomUUID().toString(), "stefan@gmail.com", "123", UserRole.BARBER),
 //							new Barber(UUID.randomUUID().toString(), "Stefan", BarberTitle.MASTER)
 //					)
 //			);

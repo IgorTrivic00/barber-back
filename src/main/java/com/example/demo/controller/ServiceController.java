@@ -4,11 +4,14 @@ import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
 import com.example.demo.dto.filter.ServiceFilter;
 import com.example.demo.dto.request_response.SearchResponse;
+import com.example.demo.model.UserEntity;
 import com.example.demo.service.ServiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +34,12 @@ public class ServiceController {
     public SearchResponse<Service> search(@RequestBody ServiceFilter filter){
         logger.debug("====================[SEARCH SERVICES]====================");
         return serviceService.search(filter);
+    }
+
+    @GetMapping("/my-services")
+    public SearchResponse<Service> findMyServices(@AuthenticationPrincipal UserEntity userEntity){
+        logger.debug("====================[FIND MY SERVICES]====================");
+        return serviceService.findMyServices(userEntity);
     }
 
     @PostMapping("/add")
