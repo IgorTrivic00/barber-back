@@ -50,7 +50,7 @@ public class BarberServiceImpl implements BarberService {
                 .collect(Collectors.toList());
     }
 
-
+    @Override
     public Barber deleteBarber(String uuid) {
         BarberEntity barberEntity = barberRepository.findByUuid(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
@@ -69,19 +69,6 @@ public class BarberServiceImpl implements BarberService {
         return barberRepository.save(barberEntity).getDto();
 
     }
-//ovo je nesto sto cemo se dogovarati, kasnije cemo ovo
-    /*
-    @Override
-    public Barber updateUserByBarber(String uuid, Barber barber, String useruuid) {
-        BarberEntity barberEntity = barberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Barber ne postoji!"));
-
-      UserEntity userEntity = userRepository.findByUuid(useruuid)
-                .orElseThrow(() -> new RuntimeException("User ne postoji!"));
-
-        barberEntity.updateUserByBarber(barber.name().trim(),barber.barberTitle(),userEntity);
-        return barberRepository.save(barberEntity).getDto();
-    }*/
 
     @Override
     public Barber findByUuid(String uuid) {

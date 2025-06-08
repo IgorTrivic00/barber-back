@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
+import com.example.demo.dto.filter.ServiceFilter;
+import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.service.ServiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +27,10 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/barber/{barberUuid}")
-    public List<Service> findBarberServices(@PathVariable String barberUuid) {
-        logger.debug("====================[FIND BARBER SERVICES]====================]");
-        return serviceService.findBarberServices(barberUuid);
-    }
-
-    @GetMapping("/all")
-    public List<Service> findAllServices() {
-        logger.debug("====================[FIND ALL SERVICES]====================");
-        return serviceService.findAllServices();
+    @PostMapping("/search")
+    public SearchResponse<Service> search(@RequestBody ServiceFilter filter){
+        logger.debug("====================[SEARCH SERVICES]====================");
+        return serviceService.search(filter);
     }
 
     @PostMapping("/add")

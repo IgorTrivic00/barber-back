@@ -29,18 +29,15 @@ public class ServiceEntity {
 
     public ServiceEntity() {}
 
-    public ServiceEntity(String uuid, String serviceName, Duration duration, Long price, BarberEntity barber) {
-        this.uuid = uuid;
-        this.serviceName = serviceName;
-        this.duration = duration;
-        this.price = price;
-        this.barber = barber;
+    public ServiceEntity(Service service) {
+        this.uuid = service.uuid();
+        update(service);
     }
 
-    public ServiceEntity update(String serviceName, Duration duration, Long price) {
-        this.serviceName = serviceName;
-        this.duration = duration;
-        this.price = price;
+    public ServiceEntity update(Service service) {
+        this.serviceName = service.serviceName();
+        this.duration = service.duration();
+        this.price = service.price();
         return this;
     }
 
@@ -48,4 +45,7 @@ public class ServiceEntity {
         return new Service(uuid, serviceName, duration, price, barber.getDto());
     }
 
+    public void setBarber(BarberEntity barber) {
+        this.barber = barber;
+    }
 }

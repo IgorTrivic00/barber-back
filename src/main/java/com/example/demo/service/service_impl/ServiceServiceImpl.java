@@ -1,11 +1,14 @@
 package com.example.demo.service.service_impl;
 
 import com.example.demo.dto.exception.ResourceNotFoundException;
+import com.example.demo.dto.filter.ServiceFilter;
+import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.BarberEntity;
 import com.example.demo.model.ServiceEntity;
 import com.example.demo.repository.BarberRepository;
 import com.example.demo.repository.ServiceRepository;
 import com.example.demo.service.ServiceService;
+import com.example.demo.specification.ServiceSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,27 +33,13 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<com.example.demo.dto.Service> findBarberServices(String uuid) {
-        BarberEntity barberEntity = barberRepository.findByUuid(uuid)
-                .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
-
-        return serviceRepository.findByBarber(barberEntity).stream()
-                .map(ServiceEntity::getDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<com.example.demo.dto.Service> findAllServices() {
-        return serviceRepository.findAll().stream()
-                .map(ServiceEntity::getDto)
-                .collect(Collectors.toList());
-    }
-    @Override
     public com.example.demo.dto.Service addService(com.example.demo.dto.Service service) {
         BarberEntity barberEntity = barberRepository.findByUuid(service.barber().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
 
-        ServiceEntity serviceEntity = new ServiceEntity(service.uuid(), service.serviceName(), service.duration(), service.price(), barberEntity);
+        ServiceEntity serviceEntity = new ServiceEntity(service);
+        serviceEntity.setBarber(barberEntity);
+
         return serviceRepository.save(serviceEntity).getDto();
     }
 
@@ -59,8 +48,17 @@ public class ServiceServiceImpl implements ServiceService {
         ServiceEntity serviceEntity = serviceRepository.findByUuid(service.uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Usluga ne postoji!"));
 
-        serviceEntity = serviceEntity.update(service.serviceName(), service.duration(), service.price());
+        serviceEntity.update(service);
         return serviceRepository.save(serviceEntity).getDto();
+    }
+
+    @Override
+    public SearchResponse<com.example.demo.dto.Service> search(ServiceFilter filter) {
+        List<com.example.demo.dto.Service> data = serviceRepository.findAll(ServiceSpecification.search(filter)).stream()
+                .map(ServiceEntity::getDto)
+                .collect(Collectors.toList());
+
+        return new SearchResponse<com.example.demo.dto.Service>(data, serviceRepository.count(ServiceSpecification.search(filter)));
     }
 
     @Override

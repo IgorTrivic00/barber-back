@@ -17,7 +17,6 @@ public interface BarberService {
 
     Barber deleteBarber(String uuid);
 
-
     Barber update( Barber barber);
 
     Barber findByUuid(String  uuid);

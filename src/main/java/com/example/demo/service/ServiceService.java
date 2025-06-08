@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
+import com.example.demo.dto.filter.ServiceFilter;
+import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.ServiceEntity;
 
 
@@ -10,14 +12,11 @@ import java.util.UUID;
 
 public interface ServiceService {
 
-    List<Service> findBarberServices(String uuid);
-
-    List<Service> findAllServices();
-
     Service addService(Service service);
 
     Service deleteService(String uuid);
 
     Service updateService( Service service);
 
+    SearchResponse<Service> search(ServiceFilter filter);
 }

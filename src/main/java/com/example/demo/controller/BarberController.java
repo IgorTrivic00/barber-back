@@ -47,7 +47,7 @@ public class BarberController {
 
     @GetMapping("/{uuid}")
     public Barber findByUuid(@PathVariable String uuid) {
-        logger.debug("====================[UPDATE USER BY BARBER]====================");
+        logger.debug("====================[FIND BARBER BY UUID]====================");
         return barberService.findByUuid(uuid);
     }
 }
