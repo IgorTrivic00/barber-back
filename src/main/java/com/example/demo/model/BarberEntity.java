@@ -24,9 +24,7 @@ public class BarberEntity {
     private BarberTitle barberTitle;
 
     @OneToOne
-    @JoinColumn(
-            name = "app_user_id"
-    )
+    @JoinColumn(name = "app_user_id")
     private UserEntity userEntity;
 
     public BarberEntity() {}
@@ -45,14 +43,6 @@ public class BarberEntity {
     public BarberEntity update(String name, BarberTitle barberTitle) {
         this.name = name;
         this.barberTitle = barberTitle;
-        return this;
-    }
-
-    //nek ostane za sada ova metoda nisam siguran da li ce nam sluziti icemu
-    public BarberEntity updateUserByBarber(String name, BarberTitle barberTitle, UserEntity userEntity) {
-        this.name = name;
-        this.barberTitle = barberTitle;
-        this.userEntity = userEntity;
         return this;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.Slot;
+import com.example.demo.dto.filter.SlotFilter;
+import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.dto.request_response.SlotAllocationRequest;
 import com.example.demo.service.SlotService;
 import org.slf4j.Logger;
@@ -30,5 +32,11 @@ public class SlotController {
         logger.debug("From: {}", request.from().getTime());
         logger.debug("To: {}", request.to().getTime());
         return slotService.allocateSlots(request);
+    }
+
+    @PostMapping("/search")
+    public SearchResponse<Slot> search(@RequestBody SlotFilter filter){
+        logger.debug("====================[SEARCH SLOTS]====================");
+        return slotService.search(filter);
     }
 }
