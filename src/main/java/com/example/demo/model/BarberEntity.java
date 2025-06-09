@@ -45,4 +45,8 @@ public class BarberEntity {
         this.barberTitle = barberTitle;
         return this;
     }
+
+    public String getUuid() {
+        return uuid;
+    }
 }

@@ -20,11 +20,16 @@ public class SlotSpecification {
                     .ifPresent(predicates::add);
 
             slotFilter.from()
-                    .map(from -> criteriaBuilder.greaterThan(root.get("start"), from))
+                    .map(from -> criteriaBuilder.greaterThanOrEqualTo(root.get("start"), from))
                     .ifPresent(predicates::add);
 
             slotFilter.to()
-                    .map(to -> criteriaBuilder.lessThan(root.get("end"), to))
+                    .map(to -> criteriaBuilder.lessThanOrEqualTo(root.get("end"), to))
+                    .ifPresent(predicates::add);
+
+            slotFilter.states()
+                    .filter(states -> !states.isEmpty())
+                    .map(states -> root.get("state").in(states))
                     .ifPresent(predicates::add);
 
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));

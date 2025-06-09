@@ -25,9 +25,12 @@ public class SlotEntity {
     @Enumerated(EnumType.STRING)
     private SlotState slotState;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "barber_id")
     private BarberEntity barber;
+
+    @Column(name = "barber_uuid")
+    private String barberUuid;
 
     @Column(name = "slot_start")
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,9 +57,10 @@ public class SlotEntity {
 
     public void setBarber(BarberEntity barber) {
         this.barber = barber;
+        this.barberUuid = barber.getUuid();
     }
 
     public Slot getDto(){
-        return new Slot(uuid, slotType, slotState, barber.getDto(), start, end);
+        return new Slot(uuid, slotType, slotState, start, end, barberUuid);
     }
 }

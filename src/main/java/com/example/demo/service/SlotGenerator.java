@@ -26,9 +26,9 @@ public class SlotGenerator {
             slots.add(new Slot(UUID.randomUUID().toString(),
                     slotType,
                     state,
-                    null,
                     slotStart,
-                    slotEnd));
+                    slotEnd,
+                    null));
 
             calendar.setTime(slotEnd);
         }
