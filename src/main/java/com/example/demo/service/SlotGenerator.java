@@ -56,6 +56,7 @@ public class SlotGenerator {
             case FIFTEEN_MINUTES: return 15;
             case THIRTY_MINUTES: return 30;
             case FORTY_MINUTES: return 40;
+            case FORTY_FIVE_MINUTES: return 45;
             case FIFTY_MINUTES: return 50;
             case HOUR: return 60;
             case HOUR_AND_FIFTEEN: return 75;

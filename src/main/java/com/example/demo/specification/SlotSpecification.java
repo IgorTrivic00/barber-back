@@ -29,7 +29,7 @@ public class SlotSpecification {
 
             slotFilter.states()
                     .filter(states -> !states.isEmpty())
-                    .map(states -> root.get("state").in(states))
+                    .map(states -> root.get("slotState").in(states))
                     .ifPresent(predicates::add);
 
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
