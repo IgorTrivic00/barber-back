@@ -47,4 +47,8 @@ public class CustomerEntity {
     public Customer getDto(){
         return new Customer(uuid, name, Optional.ofNullable(mobile));
     }
+
+    public String getUuid() {
+        return uuid;
+    }
 }
