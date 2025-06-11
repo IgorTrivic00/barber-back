@@ -6,5 +6,6 @@ public record Appointment(String uuid,
                           String customerUuid,
                           Slot slot,
                           Barber barber,
+                          Service service,
                           AppointmentState appointmentState) {
 }

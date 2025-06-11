@@ -30,6 +30,10 @@ public class AppointmentEntity {
     @JoinColumn(name = "barber")
     private BarberEntity barber;
 
+    @ManyToOne
+    @JoinColumn(name = "service")
+    private ServiceEntity service;
+
     @Enumerated(EnumType.STRING)
     private AppointmentState appointmentState;
 
@@ -47,7 +51,7 @@ public class AppointmentEntity {
     }
 
     public Appointment getDto(){
-        return new Appointment(uuid, customerUuid, slot.getDto(), barber.getDto(), appointmentState);
+        return new Appointment(uuid, customerUuid, slot.getDto(), barber.getDto(), service.getDto(), appointmentState);
     }
 
     public void setBarber(BarberEntity barber) {
@@ -61,5 +65,9 @@ public class AppointmentEntity {
 
     public void setSlot(SlotEntity slot) {
         this.slot = slot;
+    }
+
+    public void setService(ServiceEntity service) {
+        this.service = service;
     }
 }

@@ -4,15 +4,9 @@ import com.example.demo.dto.Appointment;
 import com.example.demo.dto.Slot;
 import com.example.demo.dto.exception.ResourceNotFoundException;
 import com.example.demo.dto.exception.SlotAlreadyAllocatedException;
-import com.example.demo.model.AppointmentEntity;
-import com.example.demo.model.BarberEntity;
-import com.example.demo.model.CustomerEntity;
-import com.example.demo.model.SlotEntity;
+import com.example.demo.model.*;
 import com.example.demo.model.enums.SlotState;
-import com.example.demo.repository.AppointmentRepository;
-import com.example.demo.repository.BarberRepository;
-import com.example.demo.repository.CustomerRepository;
-import com.example.demo.repository.SlotRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.AppointmentService;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +17,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final CustomerRepository customerRepository;
     private final BarberRepository barberRepository;
     private final SlotRepository slotRepository;
+    private final ServiceRepository serviceRepository;
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
                                   CustomerRepository customerRepository,
                                   BarberRepository barberRepository,
-                                  SlotRepository slotRepository) {
+                                  SlotRepository slotRepository,
+                                  ServiceRepository serviceRepository) {
         this.appointmentRepository = appointmentRepository;
         this.customerRepository = customerRepository;
         this.barberRepository = barberRepository;
         this.slotRepository = slotRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @Override
@@ -45,6 +42,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         SlotEntity slotEntity = slotRepository.findByUuid(appointment.slot().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException(("Korisnik ne postoji!")));
 
+        ServiceEntity serviceEntity = serviceRepository.findByUuid(appointment.service().uuid())
+                .orElseThrow(() -> new ResourceNotFoundException(("Usluga ne postoji!")));
+
         Slot slot = slotEntity.getDto();
 
         if(slot.slotState().equals(SlotState.ALLOCATED)){
@@ -56,6 +56,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentEntity.setBarber(barberEntity);
         appointmentEntity.setSlot(slotEntity);
         appointmentEntity.setCustomer(customerEntity);
+        appointmentEntity.setService(serviceEntity);
 
         slotEntity.update(new Slot(slot.uuid(), slot.slotType(), SlotState.ALLOCATED, slot.start(), slot.end(), slot.barberUuid()));
 
