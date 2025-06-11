@@ -1,6 +1,7 @@
 package com.example.demo.service.service_impl;
 
 import com.example.demo.dto.Appointment;
+import com.example.demo.dto.Slot;
 import com.example.demo.dto.exception.ResourceNotFoundException;
 import com.example.demo.dto.exception.SlotAlreadyAllocatedException;
 import com.example.demo.model.AppointmentEntity;
@@ -44,7 +45,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         SlotEntity slotEntity = slotRepository.findByUuid(appointment.slot().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException(("Korisnik ne postoji!")));
 
-        if(slotEntity.getDto().slotState().equals(SlotState.ALLOCATED)){
+        Slot slot = slotEntity.getDto();
+
+        if(slot.slotState().equals(SlotState.ALLOCATED)){
             throw new SlotAlreadyAllocatedException("Nije moguce zakazati u ovom terminu!");
         }
 
@@ -53,6 +56,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentEntity.setBarber(barberEntity);
         appointmentEntity.setSlot(slotEntity);
         appointmentEntity.setCustomer(customerEntity);
+
+        slotEntity.update(new Slot(slot.uuid(), slot.slotType(), SlotState.ALLOCATED, slot.start(), slot.end(), slot.barberUuid()));
+
+        slotRepository.save(slotEntity);
 
         return appointmentRepository.save(appointmentEntity).getDto();
     }
