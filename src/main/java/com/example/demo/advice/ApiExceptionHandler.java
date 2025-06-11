@@ -2,6 +2,7 @@ package com.example.demo.advice;
 
 import com.example.demo.dto.exception.ApiException;
 import com.example.demo.dto.exception.ResourceNotFoundException;
+import com.example.demo.dto.exception.SlotAlreadyAllocatedException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,13 +32,18 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
-    public ResponseEntity<ApiException> handleResourceDoesNoExistsException(ResourceNotFoundException e){
+    public ResponseEntity<ApiException> handleResourceNotFoundException(ResourceNotFoundException e){
         return new ResponseEntity<>(new ApiException(e.getMessage(), "400", 400, LocalDateTime.now()), HttpStatusCode.valueOf(400));
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})
     public ResponseEntity<ApiException> handleBadCredentialsException(BadCredentialsException e){
         return new ResponseEntity<>(new ApiException("Korisnik ne postoji!", "401", 500, LocalDateTime.now()), HttpStatusCode.valueOf(401));
+    }
+
+    @ExceptionHandler(value = {SlotAlreadyAllocatedException.class})
+    public ResponseEntity<ApiException> handleSlotAlreadyAllocatedException(SlotAlreadyAllocatedException e){
+        return new ResponseEntity<>(new ApiException(e.getMessage(), "400", 400, LocalDateTime.now()), HttpStatusCode.valueOf(400));
     }
 
 }
