@@ -10,6 +10,8 @@ import com.example.demo.repository.*;
 import com.example.demo.service.AppointmentService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
@@ -63,5 +65,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         slotRepository.save(slotEntity);
 
         return appointmentRepository.save(appointmentEntity).getDto();
+    }
+
+    @Override
+    public Optional<Appointment> findByUuid(String uuid) {
+        return appointmentRepository.findByUuid(uuid)
+                .map(AppointmentEntity::getDto);
     }
 }
