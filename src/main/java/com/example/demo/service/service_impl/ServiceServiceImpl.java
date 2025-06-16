@@ -65,7 +65,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public SearchResponse<com.example.demo.dto.Service> findMyServices(UserEntity userEntity) {
         BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity);
-        return search(new ServiceFilter(List.of(barberEntity.getDto().uuid())));
+        return search(new ServiceFilter(List.of(barberEntity.getUuid())));
     }
 
     @Override
@@ -76,8 +76,5 @@ public class ServiceServiceImpl implements ServiceService {
         serviceRepository.delete(serviceEntity);
         return serviceEntity.getDto();
     }
-
-
-
 
 }

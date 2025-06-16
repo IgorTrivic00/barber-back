@@ -4,13 +4,19 @@ import com.example.demo.dto.Appointment;
 import com.example.demo.dto.Slot;
 import com.example.demo.dto.exception.ResourceNotFoundException;
 import com.example.demo.dto.exception.SlotAlreadyAllocatedException;
+import com.example.demo.dto.filter.AppointmentFilter;
+import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.*;
 import com.example.demo.model.enums.SlotState;
 import com.example.demo.repository.*;
 import com.example.demo.service.AppointmentService;
+import com.example.demo.specification.AppointmentSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -71,5 +77,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Optional<Appointment> findByUuid(String uuid) {
         return appointmentRepository.findByUuid(uuid)
                 .map(AppointmentEntity::getDto);
+    }
+
+    @Override
+    public SearchResponse<Appointment> search(AppointmentFilter filter) {
+        Specification<AppointmentEntity> specification = AppointmentSpecification.search(filter);
+        List<Appointment> data = appointmentRepository.findAll(specification).stream()
+                .map(AppointmentEntity::getDto)
+                .toList();
+        return new SearchResponse<>(data, appointmentRepository.count(specification));
+    }
+
+    @Override
+    public SearchResponse<Appointment> findMyAppointments(UserEntity userEntity, AppointmentFilter filter) {
+        CustomerEntity customerEntity = customerRepository.findByUserEntity(userEntity);
+        return search(new AppointmentFilter(filter.uuidsIn(), Optional.of(List.of(customerEntity.getUuid())), filter.states()));
     }
 }

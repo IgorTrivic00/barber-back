@@ -2,9 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.Appointment;
 import com.example.demo.dto.exception.ResourceNotFoundException;
+import com.example.demo.dto.filter.AppointmentFilter;
+import com.example.demo.dto.request_response.SearchResponse;
+import com.example.demo.model.UserEntity;
 import com.example.demo.service.AppointmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +35,19 @@ public class AppointmentController {
         logger.debug("====================[FIND APPOINTMENT BY UUID]====================");
         return appointmentService.findByUuid(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Termin ne postoji!"));
+    }
+
+    @PostMapping("/my-appointments")
+    public SearchResponse<Appointment> findMyAppointments(@RequestBody AppointmentFilter filter,
+                                                          @AuthenticationPrincipal UserEntity userEntity){
+        logger.debug("====================[FIND MY APPOINTMENTS]====================");
+        return appointmentService.findMyAppointments(userEntity, filter);
+    }
+
+    @PostMapping("/search")
+    public SearchResponse<Appointment> search(@RequestBody AppointmentFilter filter){
+        logger.debug("====================[SEARCH APPOINTMENT]====================");
+        return appointmentService.search(filter);
     }
 
 }
