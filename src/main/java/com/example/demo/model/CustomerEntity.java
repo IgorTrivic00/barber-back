@@ -1,6 +1,7 @@
 package com.example.demo.model;
 import com.example.demo.dto.Customer;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Optional;
@@ -16,39 +17,34 @@ public class CustomerEntity {
     private Long id;
 
     @Column(unique = true)
+    @Getter
     private String uuid;
 
-    @Setter
     private String name;
-
-    @Setter
-    private String mobile;
 
     @OneToOne
     @JoinColumn(
             name = "app_user_id"
     )
+    @Setter
     private UserEntity userEntity;
+
+    private String mobile;
 
     public CustomerEntity() {}
 
-    public CustomerEntity(String uuid, String name, UserEntity userEntity) {
-        this.name = name;
-        this.userEntity = userEntity;
-        this.uuid = uuid;
+    public CustomerEntity(Customer customer) {
+        this.uuid = customer.uuid();
+        update(customer);
     }
 
-    public CustomerEntity update(Optional<String> name, Optional<String> mobile){
-        name.ifPresent(this::setName);
-        mobile.ifPresent(this::setMobile);
+    public CustomerEntity update(Customer customer){
+        this.name = customer.name();
+        this.mobile = customer.mobile();
         return this;
     }
 
     public Customer getDto(){
-        return new Customer(uuid, name, Optional.ofNullable(mobile));
-    }
-
-    public String getUuid() {
-        return uuid;
+        return new Customer(uuid, name, mobile);
     }
 }

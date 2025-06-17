@@ -28,7 +28,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer, UserEntity userEntity) {
-        CustomerEntity customerEntity = new CustomerEntity(customer.uuid(), customer.name().trim(), userEntity);
+        CustomerEntity customerEntity = new CustomerEntity(new Customer(customer.uuid(), customer.name().trim(), customer.mobile()));
+        customerEntity.setUserEntity(userEntity);
         return customerRepository.save(customerEntity).getDto();
     }
 
@@ -46,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity customerEntity = customerRepository.findByUuid(customer.uuid())
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
 
-        customerEntity = customerEntity.update(Optional.of(customer.name()), customer.mobile());
+        customerEntity.update(customer);
         return customerRepository.save(customerEntity).getDto();
     }
 }

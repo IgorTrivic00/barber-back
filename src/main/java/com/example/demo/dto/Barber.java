@@ -3,6 +3,7 @@ import com.example.demo.model.enums.BarberTitle;
 
 public record Barber(String uuid,
                      String name,
-                     BarberTitle barberTitle) {
+                     BarberTitle barberTitle,
+                     String mobile) {
 
 }

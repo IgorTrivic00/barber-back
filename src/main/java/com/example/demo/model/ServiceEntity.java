@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import com.example.demo.dto.Service;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -20,11 +22,14 @@ public class ServiceEntity {
     private String uuid;
 
     private String serviceName;
+
     private Duration duration;
+
     private Long price;
 
     @ManyToOne
     @JoinColumn(name = "barber_id")
+    @Setter
     private BarberEntity barber;
 
     public ServiceEntity() {}
@@ -43,9 +48,5 @@ public class ServiceEntity {
 
     public Service getDto(){
         return new Service(uuid, serviceName, duration, price, barber.getDto());
-    }
-
-    public void setBarber(BarberEntity barber) {
-        this.barber = barber;
     }
 }

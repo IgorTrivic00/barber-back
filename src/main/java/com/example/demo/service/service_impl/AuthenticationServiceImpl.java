@@ -56,7 +56,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserSession login(User user) {
         String password = user.password()
-                .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!")).trim();
+                .orElseThrow(() -> new IllegalArgumentException("Nema lozinke!"))
+                .trim();
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -65,7 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 )
         );
         user = userService.findByEmail(user.email().trim());
-        String token = jwtService.generateToken(new UserEntity(user.uuid(), user.email().trim(), password, user.userRole()));
+        String token = jwtService.generateToken(new UserEntity(new User(user.uuid(), user.email().trim(), password, user.userRole())));
 
         if(user.userRole().equals(UserRole.BARBER)) {
             Barber barber = barberService.findByUser(user);

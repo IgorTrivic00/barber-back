@@ -3,6 +3,8 @@ package com.example.demo.model;
 import com.example.demo.dto.Barber;
 import com.example.demo.model.enums.BarberTitle;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ public class BarberEntity {
     private Long id;
 
     @Column(unique = true)
+    @Getter
     private String uuid;
 
     private String name;
@@ -25,28 +28,26 @@ public class BarberEntity {
 
     @OneToOne
     @JoinColumn(name = "app_user_id")
+    @Setter
     private UserEntity userEntity;
+
+    private String mobile;
 
     public BarberEntity() {}
 
-    public BarberEntity(String uuid, String name, BarberTitle barberTitle, UserEntity userEntity) {
-        this.name = name;
-        this.uuid = uuid;
-        this.barberTitle = barberTitle;
-        this.userEntity = userEntity;
+    public BarberEntity(Barber barber) {
+        this.uuid = barber.uuid();
+        update(barber);
     }
 
-    public Barber getDto(){
-        return new Barber(uuid, name, barberTitle);
-    }
-
-    public BarberEntity update(String name, BarberTitle barberTitle) {
-        this.name = name;
-        this.barberTitle = barberTitle;
+    public BarberEntity update(Barber barber) {
+        this.name = barber.name();
+        this.barberTitle = barber.barberTitle();
+        this.mobile = barber.mobile();
         return this;
     }
 
-    public String getUuid() {
-        return uuid;
+    public Barber getDto(){
+        return new Barber(uuid, name, barberTitle, mobile);
     }
 }

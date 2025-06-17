@@ -32,7 +32,8 @@ public class BarberServiceImpl implements BarberService {
 
     @Override
     public Barber save(Barber barber, UserEntity userEntity) {
-        BarberEntity barberEntity = new BarberEntity(barber.uuid(), barber.name().trim(), barber.barberTitle(), userEntity);
+        BarberEntity barberEntity = new BarberEntity(new Barber(barber.uuid(), barber.name().trim(), barber.barberTitle(), barber.mobile()));
+        barberEntity.setUserEntity(userEntity);
         return barberRepository.save(barberEntity).getDto();
     }
 
@@ -63,13 +64,12 @@ public class BarberServiceImpl implements BarberService {
     }
 
     @Override
-    public Barber update( Barber barber) {
-    BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid())
+    public Barber update(Barber barber) {
+        BarberEntity barberEntity = barberRepository.findByUuid(barber.uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
 
-       barberEntity.update(barber.name().trim(),barber.barberTitle());
-        return barberRepository.save(barberEntity).getDto();
-
+       barberEntity.update(new Barber(barber.uuid(), barber.name().trim(), barber.barberTitle(), barber.mobile()));
+       return barberRepository.save(barberEntity).getDto();
     }
 
     @Override

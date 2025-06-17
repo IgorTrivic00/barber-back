@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.dto.User;
 import com.example.demo.model.enums.UserRole;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ public class UserEntity implements UserDetails {
     private String uuid;
 
     @Enumerated(EnumType.STRING)
+    @Getter
     private UserRole userRole;
 
     private boolean locked;
@@ -35,13 +37,18 @@ public class UserEntity implements UserDetails {
 
     public UserEntity() {}
 
-    public UserEntity(String uuid, String email, String password, UserRole userRole) {
-        this.email = email;
-        this.password = password;
-        this.uuid = uuid;
+    public UserEntity(User user) {
+        this.uuid = user.uuid();
         this.locked = false;
         this.enabled = true;
-        this.userRole = userRole;
+        this.userRole = user.userRole();
+        update(user);
+    }
+
+    public UserEntity update(User user){
+        this.email = user.email();
+        this.password = user.password().orElse(null);
+        return this;
     }
 
     @Override
@@ -82,9 +89,5 @@ public class UserEntity implements UserDetails {
 
     public User getDto(){
         return new User(uuid, email, userRole);
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
     }
 }

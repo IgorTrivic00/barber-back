@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.dto.Appointment;
 import com.example.demo.model.enums.AppointmentState;
 import jakarta.persistence.*;
+import lombok.Setter;
 
 @Entity
 @Table(name = "appointment")
@@ -17,18 +18,22 @@ public class AppointmentEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer")
+    @Setter
     private CustomerEntity customer;
 
     @OneToOne
     @JoinColumn(name = "slot")
+    @Setter
     private SlotEntity slot;
 
     @ManyToOne
     @JoinColumn(name = "barber")
+    @Setter
     private BarberEntity barber;
 
     @ManyToOne
     @JoinColumn(name = "service")
+    @Setter
     private ServiceEntity service;
 
     @Enumerated(EnumType.STRING)
@@ -48,21 +53,5 @@ public class AppointmentEntity {
 
     public Appointment getDto(){
         return new Appointment(uuid, customer.getDto(), slot.getDto(), barber.getDto(), service.getDto(), appointmentState);
-    }
-
-    public void setBarber(BarberEntity barber) {
-        this.barber = barber;
-    }
-
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
-    }
-
-    public void setSlot(SlotEntity slot) {
-        this.slot = slot;
-    }
-
-    public void setService(ServiceEntity service) {
-        this.service = service;
     }
 }
