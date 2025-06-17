@@ -1,30 +1,15 @@
 package com.example.demo;
 
-import com.example.demo.dto.Barber;
-import com.example.demo.dto.Customer;
-import com.example.demo.dto.Service;
-import com.example.demo.dto.User;
-import com.example.demo.dto.request_response.AuthenticationRequest;
-import com.example.demo.model.enums.BarberTitle;
-import com.example.demo.model.enums.UserRole;
-import com.example.demo.service.*;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 @EnableWebMvc
-public class DemoApplication {
+public class BarberBackoffice {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(BarberBackoffice.class, args);
 	}
 
 
