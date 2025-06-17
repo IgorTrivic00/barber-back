@@ -14,6 +14,7 @@ import com.example.demo.service.AppointmentService;
 import com.example.demo.specification.AppointmentSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public Appointment scheduleAppointment(Appointment appointment) {
         CustomerEntity customerEntity = customerRepository.findByUuid(appointment.customer().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Korisnik ne postoji!"));
@@ -104,6 +106,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
     public Appointment cancelAppointment(Appointment appointment) {
         AppointmentEntity appointmentEntity = appointmentRepository.findByUuid(appointment.uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Termin ne postoji!"));
@@ -118,6 +121,28 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         slotEntity.update(Slot.cancelSlot(slot));
+        slotRepository.save(slotEntity);
+
+        appointmentEntity.update(Appointment.cancelAppointment(appointment));
+        return appointmentRepository.save(appointmentEntity).getDto();
+    }
+
+    @Override
+    @Transactional
+    public Appointment completeAppointment(Appointment appointment) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findByUuid(appointment.uuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Termin ne postoji!"));
+
+        SlotEntity slotEntity = slotRepository.findByUuid(appointment.slot().uuid())
+                .orElseThrow(() -> new ResourceNotFoundException(("Termin ne postoji!")));
+
+        Slot slot = slotEntity.getDto();
+
+        if(!slot.slotState().equals(SlotState.ALLOCATED)){
+            throw new SlotAlreadyAllocatedException("Nije moguce završiti termin!");
+        }
+
+        slotEntity.update(Slot.completeSlot(slot));
         slotRepository.save(slotEntity);
 
         appointmentEntity.update(Appointment.cancelAppointment(appointment));

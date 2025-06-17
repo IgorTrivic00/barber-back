@@ -21,4 +21,8 @@ public record Slot(String uuid,
         return new Slot(slot.uuid(), slot.slotType(), SlotState.CANCELED, slot.start(), slot.end(), slot.barberUuid());
     }
 
+    public static Slot completeSlot(Slot slot){
+        return new Slot(slot.uuid(), slot.slotType(), SlotState.COMPLETED, slot.start(), slot.end(), slot.barberUuid());
+    }
+
 }

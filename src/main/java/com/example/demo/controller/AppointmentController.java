@@ -55,4 +55,10 @@ public class AppointmentController {
         logger.debug("====================[CANCEL APPOINTMENT]====================");
         return appointmentService.cancelAppointment(appointment);
     }
+
+    @PostMapping("/complete")
+    public Appointment completeAppointment(@RequestBody Appointment appointment){
+        logger.debug("====================[COMPLETE APPOINTMENT]====================");
+        return appointmentService.completeAppointment(appointment);
+    }
 }

@@ -13,4 +13,8 @@ public record Appointment(String uuid,
         return new Appointment(appointment.uuid(), appointment.customer(), appointment.slot(), appointment.barber(), appointment.service(), AppointmentState.CANCELLED);
     }
 
+    public static Appointment completeAppointment(Appointment appointment){
+        return new Appointment(appointment.uuid(), appointment.customer(), appointment.slot(), appointment.barber(), appointment.service(), AppointmentState.COMPLETED);
+    }
+
 }
