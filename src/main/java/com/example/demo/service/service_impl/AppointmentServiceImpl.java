@@ -49,7 +49,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(("Barber ne postoji!")));
 
         SlotEntity slotEntity = slotRepository.findByUuid(appointment.slot().uuid())
-                .orElseThrow(() -> new ResourceNotFoundException(("Korisnik ne postoji!")));
+                .orElseThrow(() -> new ResourceNotFoundException(("Termin ne postoji!")));
 
         ServiceEntity serviceEntity = serviceRepository.findByUuid(appointment.service().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException(("Usluga ne postoji!")));
@@ -67,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentEntity.setCustomer(customerEntity);
         appointmentEntity.setService(serviceEntity);
 
-        slotEntity.update(new Slot(slot.uuid(), slot.slotType(), SlotState.ALLOCATED, slot.start(), slot.end(), slot.barberUuid()));
+        slotEntity.update(Slot.allocateSlot(slot));
 
         slotRepository.save(slotEntity);
 
@@ -101,5 +101,26 @@ public class AppointmentServiceImpl implements AppointmentService {
             return search(new AppointmentFilter(filter.uuidsIn(), Optional.empty(), Optional.of(List.of(barberEntity.getUuid())), filter.states()));
         }
         throw new RuntimeException("Error");
+    }
+
+    @Override
+    public Appointment cancelAppointment(Appointment appointment) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findByUuid(appointment.uuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Termin ne postoji!"));
+
+        SlotEntity slotEntity = slotRepository.findByUuid(appointment.slot().uuid())
+                .orElseThrow(() -> new ResourceNotFoundException(("Termin ne postoji!")));
+
+        Slot slot = slotEntity.getDto();
+
+        if(!slot.slotState().equals(SlotState.ALLOCATED)){
+            throw new SlotAlreadyAllocatedException("Nije moguce otkazati termin!");
+        }
+
+        slotEntity.update(Slot.cancelSlot(slot));
+        slotRepository.save(slotEntity);
+
+        appointmentEntity.update(Appointment.cancelAppointment(appointment));
+        return appointmentRepository.save(appointmentEntity).getDto();
     }
 }

@@ -12,4 +12,13 @@ public record Slot(String uuid,
                    Date start,
                    Date end,
                    String barberUuid) {
+
+    public static Slot allocateSlot(Slot slot){
+        return new Slot(slot.uuid(), slot.slotType(), SlotState.ALLOCATED, slot.start(), slot.end(), slot.barberUuid());
+    }
+
+    public static Slot cancelSlot(Slot slot){
+        return new Slot(slot.uuid(), slot.slotType(), SlotState.CANCELED, slot.start(), slot.end(), slot.barberUuid());
+    }
+
 }

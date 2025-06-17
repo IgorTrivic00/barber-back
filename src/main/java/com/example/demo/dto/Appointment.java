@@ -8,4 +8,9 @@ public record Appointment(String uuid,
                           Barber barber,
                           Service service,
                           AppointmentState appointmentState) {
+
+    public static Appointment cancelAppointment(Appointment appointment){
+        return new Appointment(appointment.uuid(), appointment.customer(), appointment.slot(), appointment.barber(), appointment.service(), AppointmentState.CANCELLED);
+    }
+
 }

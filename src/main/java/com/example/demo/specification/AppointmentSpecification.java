@@ -34,6 +34,8 @@ public class AppointmentSpecification {
                     .map(states -> root.get("appointmentState").in(states))
                     .ifPresent(predicates::add);
 
+            query.orderBy(criteriaBuilder.asc(root.get("slot").get("start")));
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }

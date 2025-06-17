@@ -50,4 +50,9 @@ public class AppointmentController {
         return appointmentService.search(filter);
     }
 
+    @PostMapping("/cancel")
+    public Appointment cancelAppointment(@RequestBody Appointment appointment){
+        logger.debug("====================[CANCEL APPOINTMENT]====================");
+        return appointmentService.cancelAppointment(appointment);
+    }
 }

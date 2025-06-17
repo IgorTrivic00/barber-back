@@ -32,6 +32,8 @@ public class SlotSpecification {
                     .map(states -> root.get("slotState").in(states))
                     .ifPresent(predicates::add);
 
+            query.orderBy(criteriaBuilder.asc(root.get("start")));
+
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         });
     }

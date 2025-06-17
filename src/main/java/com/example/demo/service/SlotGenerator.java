@@ -19,7 +19,7 @@ public class SlotGenerator {
 
         do {
             Date slotStart = calendar.getTime();
-            Date slotEnd = offset((Calendar) calendar.clone(), Calendar.MINUTE, getDuration(slotType));
+            Date slotEnd = offset((Calendar) calendar.clone(), getDuration(slotType));
 
             if (slotEnd.after(to)) break;
 
@@ -46,21 +46,20 @@ public class SlotGenerator {
         return calendar;
     }
 
-    private static Date offset(Calendar calendar, int field, int amount) {
-        calendar.add(field, amount);
+    private static Date offset(Calendar calendar, int amount) {
+        calendar.add(Calendar.MINUTE, amount);
         return calendar.getTime();
     }
 
     private static int getDuration(SlotType slotType){
-        switch (slotType) {
-            case FIFTEEN_MINUTES: return 15;
-            case THIRTY_MINUTES: return 30;
-            case FORTY_MINUTES: return 40;
-            case FORTY_FIVE_MINUTES: return 45;
-            case FIFTY_MINUTES: return 50;
-            case HOUR: return 60;
-            case HOUR_AND_FIFTEEN: return 75;
-        }
-        throw new IllegalArgumentException("Unknown SlotType: " + slotType);
+        return switch (slotType) {
+            case FIFTEEN_MINUTES -> 15;
+            case THIRTY_MINUTES -> 30;
+            case FORTY_MINUTES -> 40;
+            case FORTY_FIVE_MINUTES -> 45;
+            case FIFTY_MINUTES -> 50;
+            case HOUR -> 60;
+            case HOUR_AND_FIFTEEN -> 75;
+        };
     }
 }

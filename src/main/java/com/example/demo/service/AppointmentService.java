@@ -15,4 +15,6 @@ public interface AppointmentService {
     SearchResponse<Appointment> search(AppointmentFilter filter);
 
     SearchResponse<Appointment> findMyAppointments(UserEntity userEntity, AppointmentFilter filter);
+
+    Appointment cancelAppointment(Appointment appointment);
 }

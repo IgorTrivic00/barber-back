@@ -26,6 +26,8 @@ public class ServiceSpecification {
                     .map(barberUuids -> root.get("barber").get("uuid").in(barberUuids))
                     .ifPresent(predicates::add);
 
+            query.orderBy(criteriaBuilder.asc(criteriaBuilder.lower(root.get("serviceName"))));
+
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         });
 
