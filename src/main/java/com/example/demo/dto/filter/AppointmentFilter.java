@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public record AppointmentFilter(Optional<List<String>> uuidsIn,
                                 Optional<List<String>> customerUuids,
+                                Optional<List<String>> barberUuids,
                                 Optional<List<AppointmentState>> states) {
 }

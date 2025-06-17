@@ -15,12 +15,9 @@ public class AppointmentEntity {
     @Column(unique = true)
     private String uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "customer")
     private CustomerEntity customer;
-
-    @Column(name = "customer_uuid")
-    private String customerUuid;
 
     @OneToOne
     @JoinColumn(name = "slot")
@@ -45,13 +42,12 @@ public class AppointmentEntity {
     }
 
     public AppointmentEntity update(Appointment appointment){
-        this.customerUuid = appointment.customerUuid();
         this.appointmentState = appointment.appointmentState();
         return this;
     }
 
     public Appointment getDto(){
-        return new Appointment(uuid, customerUuid, slot.getDto(), barber.getDto(), service.getDto(), appointmentState);
+        return new Appointment(uuid, customer.getDto(), slot.getDto(), barber.getDto(), service.getDto(), appointmentState);
     }
 
     public void setBarber(BarberEntity barber) {
@@ -59,7 +55,6 @@ public class AppointmentEntity {
     }
 
     public void setCustomer(CustomerEntity customer) {
-        this.customerUuid = customer.getUuid();
         this.customer = customer;
     }
 

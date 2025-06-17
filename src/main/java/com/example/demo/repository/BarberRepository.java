@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface BarberRepository extends JpaRepository<BarberEntity, Long> {
 
-    BarberEntity findByUserEntity(UserEntity userEntity);
+    Optional<BarberEntity> findByUserEntity(UserEntity userEntity);
     Optional<BarberEntity> findByUuid(String uuid);
 
 }

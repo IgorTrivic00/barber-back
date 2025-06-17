@@ -40,7 +40,9 @@ public class BarberServiceImpl implements BarberService {
     public Barber findByUser(User user) {
         UserEntity userEntity = userRepository.findByEmail(user.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
-        return barberRepository.findByUserEntity(userEntity).getDto();
+        return barberRepository.findByUserEntity(userEntity)
+                .orElseThrow(() -> new ResourceNotFoundException("Frizer ne postoji!"))
+                .getDto();
     }
 
     @Override

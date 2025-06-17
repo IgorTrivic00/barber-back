@@ -8,6 +8,7 @@ import com.example.demo.dto.filter.AppointmentFilter;
 import com.example.demo.dto.request_response.SearchResponse;
 import com.example.demo.model.*;
 import com.example.demo.model.enums.SlotState;
+import com.example.demo.model.enums.UserRole;
 import com.example.demo.repository.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.specification.AppointmentSpecification;
@@ -41,7 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment scheduleAppointment(Appointment appointment) {
-        CustomerEntity customerEntity = customerRepository.findByUuid(appointment.customerUuid())
+        CustomerEntity customerEntity = customerRepository.findByUuid(appointment.customer().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Korisnik ne postoji!"));
 
         BarberEntity barberEntity = barberRepository.findByUuid(appointment.barber().uuid())
@@ -90,7 +91,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public SearchResponse<Appointment> findMyAppointments(UserEntity userEntity, AppointmentFilter filter) {
-        CustomerEntity customerEntity = customerRepository.findByUserEntity(userEntity);
-        return search(new AppointmentFilter(filter.uuidsIn(), Optional.of(List.of(customerEntity.getUuid())), filter.states()));
+        if(userEntity.getUserRole().equals(UserRole.CUSTOMER)){
+            CustomerEntity customerEntity = customerRepository.findByUserEntity(userEntity)
+                    .orElseThrow(() -> new ResourceNotFoundException("Korisnik ne postoji!"));
+            return search(new AppointmentFilter(filter.uuidsIn(), Optional.of(List.of(customerEntity.getUuid())), Optional.empty(), filter.states()));
+        }else if(userEntity.getUserRole().equals(UserRole.BARBER)){
+            BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity)
+                    .orElseThrow(() -> new ResourceNotFoundException("Frizer ne postoji!"));
+            return search(new AppointmentFilter(filter.uuidsIn(), Optional.empty(), Optional.of(List.of(barberEntity.getUuid())), filter.states()));
+        }
+        throw new RuntimeException("Error");
     }
 }

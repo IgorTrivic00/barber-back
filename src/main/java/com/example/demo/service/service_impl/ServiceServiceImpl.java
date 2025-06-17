@@ -64,7 +64,8 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public SearchResponse<com.example.demo.dto.Service> findMyServices(UserEntity userEntity) {
-        BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity);
+        BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity)
+                .orElseThrow(() -> new ResourceNotFoundException("Frizer ne postoji!"));
         return search(new ServiceFilter(List.of(barberEntity.getUuid())));
     }
 

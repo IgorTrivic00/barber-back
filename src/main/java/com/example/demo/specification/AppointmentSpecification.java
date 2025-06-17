@@ -21,7 +21,12 @@ public class AppointmentSpecification {
 
             filter.customerUuids()
                     .filter(customerUuids -> !customerUuids.isEmpty())
-                    .map(customerUuids -> root.get("customerUuid").in(customerUuids))
+                    .map(customerUuids -> root.get("customer").get("uuid").in(customerUuids))
+                    .ifPresent(predicates::add);
+
+            filter.barberUuids()
+                    .filter(barberUuids -> !barberUuids.isEmpty())
+                    .map(barberUuids -> root.get("barber").get("uuid").in(barberUuids))
                     .ifPresent(predicates::add);
 
             filter.states()

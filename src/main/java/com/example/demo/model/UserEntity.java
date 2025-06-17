@@ -84,4 +84,7 @@ public class UserEntity implements UserDetails {
         return new User(uuid, email, userRole);
     }
 
+    public UserRole getUserRole() {
+        return userRole;
+    }
 }

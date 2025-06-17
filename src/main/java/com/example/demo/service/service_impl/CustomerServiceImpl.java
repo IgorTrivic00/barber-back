@@ -36,7 +36,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findByUser(User user) {
         UserEntity userEntity = userRepository.findByUuid(user.uuid())
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"));
-        return customerRepository.findByUserEntity(userEntity).getDto();
+        return customerRepository.findByUserEntity(userEntity)
+                .orElseThrow(() -> new UsernameNotFoundException("Korisnik ne postoji!"))
+                .getDto();
     }
 
     @Override
