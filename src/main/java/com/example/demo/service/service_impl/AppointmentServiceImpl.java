@@ -145,7 +145,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         slotEntity.update(Slot.completeSlot(slot));
         slotRepository.save(slotEntity);
 
-        appointmentEntity.update(Appointment.cancelAppointment(appointment));
+        appointmentEntity.update(Appointment.completeAppointment(appointment));
         return appointmentRepository.save(appointmentEntity).getDto();
     }
 }

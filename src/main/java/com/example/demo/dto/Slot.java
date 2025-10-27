@@ -14,15 +14,18 @@ public record Slot(String uuid,
                    String barberUuid) {
 
     public static Slot allocateSlot(Slot slot){
-        return new Slot(slot.uuid(), slot.slotType(), SlotState.ALLOCATED, slot.start(), slot.end(), slot.barberUuid());
+        return of(slot, SlotState.ALLOCATED);
     }
 
     public static Slot cancelSlot(Slot slot){
-        return new Slot(slot.uuid(), slot.slotType(), SlotState.CANCELED, slot.start(), slot.end(), slot.barberUuid());
+        return of(slot, SlotState.CANCELED);
     }
 
     public static Slot completeSlot(Slot slot){
-        return new Slot(slot.uuid(), slot.slotType(), SlotState.COMPLETED, slot.start(), slot.end(), slot.barberUuid());
+        return of(slot, SlotState.COMPLETED);
     }
 
+    private static Slot of(Slot slot, SlotState slotState){
+        return new Slot(slot.uuid(), slot.slotType(), slotState, slot.start(), slot.end(), slot.barberUuid());
+    }
 }

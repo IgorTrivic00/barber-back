@@ -21,7 +21,7 @@ public class AppointmentEntity {
     @Setter
     private CustomerEntity customer;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "slot")
     @Setter
     private SlotEntity slot;

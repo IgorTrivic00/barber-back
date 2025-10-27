@@ -10,7 +10,7 @@ public record Appointment(String uuid,
                           AppointmentState appointmentState) {
 
     public static Appointment cancelAppointment(Appointment appointment){
-        return new Appointment(appointment.uuid(), appointment.customer(), appointment.slot(), appointment.barber(), appointment.service(), AppointmentState.CANCELLED);
+        return new Appointment(appointment.uuid(), appointment.customer(), null, appointment.barber(), appointment.service(), AppointmentState.CANCELLED);
     }
 
     public static Appointment completeAppointment(Appointment appointment){
