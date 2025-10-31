@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.dto.Photo;
 import jakarta.persistence.*;
 
+import java.io.File;
 import java.util.Optional;
 
 @Entity
@@ -33,6 +34,8 @@ public class PhotoEntity {
 
     private String mediaType;
 
+    private String ownerUuid;
+
     public PhotoEntity(){
     }
 
@@ -44,6 +47,7 @@ public class PhotoEntity {
     public PhotoEntity update(Photo photo) {
         this.title = photo.title();
         this.name = photo.name();
+        this.ownerUuid = photo.ownerUuid();
         this.size = photo.size().orElse(0L);
         this.url = photo.url().orElse(null);
         this.width = photo.width().orElse(0);
@@ -58,12 +62,14 @@ public class PhotoEntity {
                 uuid,
                 name,
                 title,
+                ownerUuid,
                 Optional.of(width),
                 Optional.of(height),
                 Optional.of(size),
                 Optional.ofNullable(url),
                 Optional.ofNullable(contentType),
-                Optional.ofNullable(mediaType)
+                Optional.ofNullable(mediaType),
+                Optional.of(new File(url))
         );
     }
 

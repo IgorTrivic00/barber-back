@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,9 +35,9 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo store(String rootFolder, String originalName, InputStream photoStream) throws IOException {
+    public Photo store(String rootFolder, String originalName, String ownerUuid, InputStream photoStream) throws IOException {
         String filePath = FileContentUtils.getFilePath(null, rootFolder, originalName);
-        Photo photo = Photo.of(originalName, originalName);
+        Photo photo = Photo.of(originalName, originalName, ownerUuid);
         storageService.importStream(photoStream, filePath);
         File photoFile = storageService.getFile(filePath);
 
@@ -49,12 +50,14 @@ public class PhotoServiceImpl implements PhotoService {
             Photo photo1 = new Photo(photo.uuid(),
                     photo.name(),
                     photo.title(),
+                    photo.ownerUuid(),
                     Optional.of(bufferedImage.getWidth()),
                     Optional.of(bufferedImage.getHeight()),
                     Optional.of(Files.size(photoFile.toPath())),
                     Optional.of(photoFile.getAbsolutePath()),
                     Optional.ofNullable(contentType),
-                    Optional.ofNullable(mediaType)
+                    Optional.ofNullable(mediaType),
+                    Optional.empty()
             );
             PhotoEntity photoEntity = new PhotoEntity(photo1);
             return photoRepository.save(photoEntity).getDto();
@@ -65,6 +68,12 @@ public class PhotoServiceImpl implements PhotoService {
             }
             throw exc;
         }
+    }
+
+    @Override
+    public Photo getById(Long id, String ownerUuid) {
+        return photoRepository.findByIdAndOwnerUuid(id, ownerUuid).orElseThrow(NoSuchElementException::new)
+                .getDto();
     }
 
 

@@ -1,23 +1,28 @@
 package com.example.demo.dto;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
 
 public record Photo(String uuid,
                     String name,
                     String title,
+                    String ownerUuid,
                     Optional<Integer> width,
                     Optional<Integer> height,
                     Optional<Long> size,
                     Optional<String> url,
                     Optional<String> contentType,
-                    Optional<String> mediaType) {
+                    Optional<String> mediaType,
+                    Optional<File> file) {
 
-    public static Photo of(String name, String title){
+    public static Photo of(String name, String title, String ownerUuid){
         return new Photo(
                 UUID.randomUUID().toString(),
                 name,
                 title,
+                ownerUuid,
+                Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
