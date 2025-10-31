@@ -47,7 +47,9 @@ public class PhotoServiceImpl implements PhotoService {
                     .orElseGet(() -> URLConnection.guessContentTypeFromName(photoFile.getName()));
             String mediaType = contentType != null ? MediaType.parseMediaType(contentType).getType() : null;
 
-            Photo photo1 = new Photo(photo.uuid(),
+            Photo photo1 = new Photo(
+                    0L,
+                    photo.uuid(),
                     photo.name(),
                     photo.title(),
                     photo.ownerUuid(),

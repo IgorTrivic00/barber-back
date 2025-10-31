@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,9 +45,14 @@ public class ServiceController {
     }
 
     @PostMapping("/add")
-    public Service addService(@RequestBody Service service) {
+    public Service addService(@RequestBody Service service,
+                              @RequestPart(value = "photo", required = false) MultipartFile photo) throws IOException {
         logger.debug("====================[ADD SERVICE]====================");
-        return serviceService.addService(service);
+        byte[] bytes = new byte[0];
+        if(photo != null){
+            bytes = photo.getBytes();
+        }
+        return serviceService.addService(service, bytes);
     }
 
     @PutMapping()

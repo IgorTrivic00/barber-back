@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.dto.Photo;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.io.File;
 import java.util.Optional;
@@ -13,6 +14,7 @@ public class PhotoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
+    @Getter
     private Long id;
 
     @Column(unique = true)
@@ -59,6 +61,7 @@ public class PhotoEntity {
 
     public Photo getDto(){
         return new Photo(
+                id,
                 uuid,
                 name,
                 title,

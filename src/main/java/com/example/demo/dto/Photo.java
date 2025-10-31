@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
 
-public record Photo(String uuid,
+public record Photo(Long id,
+                    String uuid,
                     String name,
                     String title,
                     String ownerUuid,
@@ -18,6 +19,7 @@ public record Photo(String uuid,
 
     public static Photo of(String name, String title, String ownerUuid){
         return new Photo(
+                0L,
                 UUID.randomUUID().toString(),
                 name,
                 title,

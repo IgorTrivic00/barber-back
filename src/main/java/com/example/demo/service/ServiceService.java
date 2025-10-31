@@ -1,19 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
 import com.example.demo.dto.filter.ServiceFilter;
 import com.example.demo.dto.request_response.SearchResponse;
-import com.example.demo.model.ServiceEntity;
 import com.example.demo.model.UserEntity;
 
-
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
 
 public interface ServiceService {
 
-    Service addService(Service service);
+    Service addService(Service service, byte[] bytes) throws IOException;
 
     Service deleteService(String uuid);
 
