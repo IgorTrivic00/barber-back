@@ -33,6 +33,11 @@ public class BarberEntity {
 
     private String mobile;
 
+    @ManyToOne
+    @JoinColumn(name = "photo_id")
+    @Setter
+    private PhotoEntity photoEntity;
+
     public BarberEntity() {}
 
     public BarberEntity(Barber barber) {
@@ -48,6 +53,13 @@ public class BarberEntity {
     }
 
     public Barber getDto(){
-        return new Barber(uuid, name, barberTitle, mobile);
+        return new Barber(
+                uuid,
+                name,
+                barberTitle,
+                mobile,
+                Optional.empty(),
+                photoEntity != null ? Optional.of(photoEntity.getId()) : Optional.empty()
+        );
     }
 }

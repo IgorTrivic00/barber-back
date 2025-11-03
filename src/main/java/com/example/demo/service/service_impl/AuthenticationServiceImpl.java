@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -96,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Barber registerBarber(Barber barber, User user) {
+    public Barber registerBarber(Barber barber, User user) throws IOException {
         validateEmail(user.email().trim());
 
         user = new User(user.uuid(), user.email().trim(), passwordEncoder.encode(user.password()

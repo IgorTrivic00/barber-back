@@ -53,7 +53,7 @@ public class ServiceServiceImpl implements ServiceService {
         ServiceEntity serviceEntity = new ServiceEntity(service);
         serviceEntity.setBarber(barberEntity);
 
-        if(photoBytes.length != 0){
+        if(photoBytes != null){
             logger.debug("Photo for service included, storing photo...");
             Photo photo = service.photo().orElseThrow(() -> new IllegalArgumentException("No photo!"));
             photo = photoService.store("service", photo.name(), service.uuid(), new ByteArrayInputStream(photoBytes));

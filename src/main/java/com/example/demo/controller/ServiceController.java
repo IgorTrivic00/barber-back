@@ -43,7 +43,7 @@ public class ServiceController {
     public Service addService(@RequestPart Service service,
                               @RequestPart(value = "photo", required = false) MultipartFile photo) throws IOException {
         logger.debug("====================[ADD SERVICE]====================");
-        byte[] bytes = new byte[0];
+        byte[] bytes = null;
         if(photo != null){
             bytes = photo.getBytes();
         }
