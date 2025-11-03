@@ -35,6 +35,7 @@ public class SecurityConfig {
                     auth.requestMatchers(antMatcher("/api/v1/auth/**")).permitAll();
                     auth.requestMatchers(antMatcher("/api/v1/barber/find-all")).permitAll();
                     auth.requestMatchers(antMatcher("/api/v1/service/search")).permitAll();
+                    auth.requestMatchers(antMatcher("/api/v1/content/photo/**")).permitAll();
                     auth.anyRequest().authenticated();
                 });
         http
