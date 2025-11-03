@@ -9,13 +9,13 @@ import java.io.IOException;
 
 public interface ServiceService {
 
-    Service addService(Service service, byte[] bytes) throws IOException;
+    Service add(Service service, byte[] bytes) throws IOException;
 
-    Service deleteService(String uuid);
+    Service delete(String uuid);
 
-    Service updateService( Service service);
+    Service update(Service service);
 
     SearchResponse<Service> search(ServiceFilter filter);
 
-    SearchResponse<Service> findMyServices(UserEntity userEntity);
+    SearchResponse<Service> findForUser(UserEntity userEntity);
 }

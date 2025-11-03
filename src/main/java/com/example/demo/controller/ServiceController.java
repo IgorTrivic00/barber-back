@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.Barber;
 import com.example.demo.dto.Service;
 import com.example.demo.dto.filter.ServiceFilter;
 import com.example.demo.dto.request_response.SearchResponse;
@@ -9,15 +8,11 @@ import com.example.demo.service.ServiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/service")
@@ -41,30 +36,30 @@ public class ServiceController {
     @GetMapping("/my-services")
     public SearchResponse<Service> findMyServices(@AuthenticationPrincipal UserEntity userEntity){
         logger.debug("====================[FIND MY SERVICES]====================");
-        return serviceService.findMyServices(userEntity);
+        return serviceService.findForUser(userEntity);
     }
 
     @PostMapping("/add")
-    public Service addService(@RequestBody Service service,
+    public Service addService(@RequestPart Service service,
                               @RequestPart(value = "photo", required = false) MultipartFile photo) throws IOException {
         logger.debug("====================[ADD SERVICE]====================");
         byte[] bytes = new byte[0];
         if(photo != null){
             bytes = photo.getBytes();
         }
-        return serviceService.addService(service, bytes);
+        return serviceService.add(service, bytes);
     }
 
     @PutMapping()
     public Service updateService(@RequestBody Service service) {
         logger.debug("====================[UPDATE SERVICE]====================");
-        return serviceService.updateService( service);
+        return serviceService.update( service);
     }
 
     @DeleteMapping("/{uuid}")
     public Service deleteService(@PathVariable String uuid) {
         logger.debug("====================[DELETE SERVICE]====================");
-        return serviceService.deleteService(uuid);
+        return serviceService.delete(uuid);
     }
 
 }

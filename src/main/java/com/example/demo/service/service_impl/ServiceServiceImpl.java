@@ -46,17 +46,17 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public com.example.demo.dto.Service addService(com.example.demo.dto.Service service, byte[] bytes) throws IOException {
+    public com.example.demo.dto.Service add(com.example.demo.dto.Service service, byte[] photoBytes) throws IOException {
         BarberEntity barberEntity = barberRepository.findByUuid(service.barber().uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Barber ne postoji!"));
 
         ServiceEntity serviceEntity = new ServiceEntity(service);
         serviceEntity.setBarber(barberEntity);
 
-        if(bytes.length != 0){
+        if(photoBytes.length != 0){
             logger.debug("Photo for service included, storing photo...");
             Photo photo = service.photo().orElseThrow(() -> new IllegalArgumentException("No photo!"));
-            photo = photoService.store("service", photo.name(), service.uuid(), new ByteArrayInputStream(bytes));
+            photo = photoService.store("service", photo.name(), service.uuid(), new ByteArrayInputStream(photoBytes));
             PhotoEntity photoEntity = photoRepository
                     .findByIdAndOwnerUuid(photo.id(), photo.ownerUuid()).orElseThrow(() -> new IllegalArgumentException("No stored photo!"));
             serviceEntity.setPhotoEntity(photoEntity);
@@ -66,7 +66,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public com.example.demo.dto.Service updateService(com.example.demo.dto.Service service) {
+    public com.example.demo.dto.Service update(com.example.demo.dto.Service service) {
         ServiceEntity serviceEntity = serviceRepository.findByUuid(service.uuid())
                 .orElseThrow(() -> new ResourceNotFoundException("Usluga ne postoji!"));
 
@@ -80,18 +80,18 @@ public class ServiceServiceImpl implements ServiceService {
                 .map(ServiceEntity::getDto)
                 .collect(Collectors.toList());
 
-        return new SearchResponse<com.example.demo.dto.Service>(data, serviceRepository.count(ServiceSpecification.search(filter)));
+        return new SearchResponse<>(data, serviceRepository.count(ServiceSpecification.search(filter)));
     }
 
     @Override
-    public SearchResponse<com.example.demo.dto.Service> findMyServices(UserEntity userEntity) {
+    public SearchResponse<com.example.demo.dto.Service> findForUser(UserEntity userEntity) {
         BarberEntity barberEntity = barberRepository.findByUserEntity(userEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Frizer ne postoji!"));
-        return search(new ServiceFilter(List.of(barberEntity.getUuid())));
+        return search(ServiceFilter.of(List.of(barberEntity.getUuid())));
     }
 
     @Override
-    public com.example.demo.dto.Service deleteService(String uuid) {
+    public com.example.demo.dto.Service delete(String uuid) {
         ServiceEntity serviceEntity = serviceRepository.findByUuid(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Usluga ne postoji!"));
 

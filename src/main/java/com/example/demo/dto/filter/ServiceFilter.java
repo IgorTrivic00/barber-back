@@ -6,8 +6,8 @@ import java.util.Optional;
 public record ServiceFilter(Optional<List<String>> barberUuids,
                             Optional<List<String>> uuidsIn) {
 
-    public ServiceFilter(List<String> barberUuids) {
-        this(Optional.of(barberUuids), Optional.empty());
+    public static ServiceFilter of(List<String> barberUuids){
+        return new ServiceFilter(Optional.of(barberUuids), Optional.empty());
     }
 
 }
